@@ -1,0 +1,43 @@
+{
+    "common": {
+        "name": "xiaomiairpurifier",
+        "version": "0.0.1",
+        "news": {
+            "0.0.1": {
+                "en": "initial adapter",
+                "de": "Initiale Version"
+            }
+        },
+        "title": "Xiaomi-Air-Purifier",
+        "titleLang": {
+            "en": "Xiaomi Air Purifier",
+            "de": "Xiaomi Luftfilter"
+        },
+        "desc": {
+            "en": "Controll your Xiaomi Air Purifier",
+            "de": "Steuere deinen Xiaomi Air Purifier"
+        },
+        "authors": [
+            "Johannes Jaeger <johannesjaegeroffice@gmail.com>"
+        ],
+        "docs": {
+            "en": "docs/en/admin.md"
+        },
+        "platform": "Javascript/Node.js",
+        "mode": "daemon",
+        "icon": "xiaomiairpurifier.png",
+        "materialize": true,
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/JoJ123/ioBroker.xiaomiairpurifier/master/admin/xiaomiairpurifier.png",
+        "keywords": ["xiaomiairpurifier", "xiaomi", "air", "purifier"],
+        "readme": "https://github.com/JoJ123/ioBroker.xiaomiairpurifier/blob/master/README.md",
+        "loglevel": "info",
+        "type": "general",
+        "license": "MIT",
+        "messagebox": false
+    },
+    "native": {},
+    "objects": [
+
+    ]
+}
