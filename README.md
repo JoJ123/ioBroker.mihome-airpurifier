@@ -5,8 +5,11 @@ Xiaomi Air Purifier adapter for ioBroker IoT platform.
 
 ## Cloud Connection
 To control the Air Purifier with the cloud adapter just add the state "favoritelevel" to your Cloud Adapter. After that you can send f.e. the following commands through Alexa:
+
 *Alexa, turn the air purifier on*,
+
 *Alexa, set the air purifier to 50%*,
+
 *Alexa, turn the air purifier off*
 
 If you set in the Cloud adapter the "On Value" to "Last active value" the device allways start running in the latest acitve power level.
@@ -35,7 +38,9 @@ The following information is collected from your air purifier (read-only states)
 | humidity    | The messured relative humidity in % of the device. |
 | pm25        | The air polution in PM2.5. |
 
-### 0.0.1
+## Changelog
+
+### 0.0.1 (10.10.2018)
 * (JoJ123) initial release
 
 ## License
