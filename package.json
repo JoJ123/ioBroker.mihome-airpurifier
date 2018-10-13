@@ -1,7 +1,7 @@
 {
-  "name": "iobroker.xiaomiairpurifier",
+  "name": "iobroker.mihome-airpurifier",
   "version": "0.0.1",
-  "description": "xiaomiairpurifier",
+  "description": "mihome-airpurifier",
   "author": {
     "name": "Johannes Jaeger",
     "email": "johannesjaegeroffice@gmail.com"
@@ -10,20 +10,21 @@
     "name": "Johannes Jaeger",
     "email": "johannesjaegeroffice@gmail.com"
   }],
-  "homepage": "https://github.com/JoJ123/ioBroker.xiaomiairpurifier",
+  "homepage": "https://github.com/JoJ123/ioBroker.mihome-airpurifier",
   "license": "MIT",
   "keywords": [
     "ioBroker",
     "xiaomi",
     "air",
     "purifier",
-    "xiaomiairpurifier",
+    "mihome",
+    "airpurifier",
     "Smart Home",
     "home automation"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/JoJ123/ioBroker.xiaomiairpurifier"
+    "url": "https://github.com/JoJ123/ioBroker.mihome-airpurifier"
   },
   "dependencies": {
     "miio": "^0.15.6"
@@ -38,7 +39,7 @@
     "test": "node node_modules/mocha/bin/mocha --exit"
   },
   "bugs": {
-    "url": "https://github.com/JoJ123/ioBroker.xiaomiairpurifier/issues"
+    "url": "https://github.com/JoJ123/ioBroker.mihome-airpurifier/issues"
   },
   "readmeFilename": "README.md"
 }

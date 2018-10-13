@@ -17,7 +17,7 @@ const {
 } = require(__dirname + "/miairpurifierconstants");
 
 const utils = require(__dirname + "/lib/utils");
-const adapter = new utils.Adapter("xiaomiairpurifier");
+const adapter = new utils.Adapter("mihome-airpurifier");
 const miairpurifier = require(__dirname + "/miairpurifier");
 let purifier;
 
