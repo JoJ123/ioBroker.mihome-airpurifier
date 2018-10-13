@@ -1,7 +1,40 @@
 ![Logo](admin/xiaomiairpurifier.png)
 # ioBroker.xiaomiairpurifier
 
-Xiaomi Air Purifier adapter for ioBroker IoT platform. 
+Xiaomi Air Purifier adapter for ioBroker IoT platform.
+
+## How to get the token?
+You have to install the miio command line tool
+`npm install -g miio`
+
+Now you have two options:
+1. With Mi Home App:
+
+    You connect the purifier with MI Home App to your Wifi Network and then run the following command:
+
+    `npm discover`
+
+    You should get the following output and can save the token.
+
+    ```
+    Device ID: 48765421
+    Model info: zhimi.airpurifier.m1
+    Address: 192.168.100.9
+    Token: token-as-hex-here via auto-token
+    Support: At least basic
+    ```
+
+2. Without Mi Home App:
+
+    You reset the WIFI settings of the air purifier. Then you connect your network with the WIFI of the air purifier and run the following command:
+
+    `npm discover`
+
+    You should get the same output as above and can now configure the connection to your network by follwing command:
+
+    `miio id-or-address configure --ssid ssid-of-network --passwd password-of-network`
+
+    Now the air purifier is connected to your network.
 
 ## Cloud Connection
 To control the Air Purifier with the cloud adapter just add the state "favoritelevel" to your Cloud Adapter. After that you can send f.e. the following commands through Alexa:
