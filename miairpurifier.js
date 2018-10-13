@@ -22,13 +22,13 @@ module.exports = class miairpurifier extends require("events").EventEmitter {
 
     this.ipaddress = adapter.config.ipaddress;
     if (!this.ipaddress) {
-      adapter.log.error("xiaomiairpurifier needs an ip address, take default IP: 127.0.0.1");
+      adapter.log.error("mihome-airpurifier needs an ip address, take default IP: 127.0.0.1");
       this.ipaddress = "127.0.0.1";
     }
 
     this.token = adapter.config.token;
     if (!this.token) {
-      adapter.log.error("xiaomiairpurifier needs a token, take empty token");
+      adapter.log.error("mihome-airpurifier needs a token, take empty token");
       this.token = "";
     }
 

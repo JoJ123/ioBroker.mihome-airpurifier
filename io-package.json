@@ -25,7 +25,7 @@
         },
         "platform": "Javascript/Node.js",
         "mode": "daemon",
-        "icon": "xiaomiairpurifier.png",
+        "icon": "mihome-airpurifier.png",
         "materialize": true,
         "enabled": true,
         "extIcon": "https://raw.githubusercontent.com/JoJ123/ioBroker.mihome-airpurifier/master/admin/mihome-airpurifier.png",

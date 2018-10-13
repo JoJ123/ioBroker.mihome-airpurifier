@@ -1,5 +1,5 @@
-![Logo](admin/xiaomiairpurifier.png)
-# ioBroker.xiaomiairpurifier
+![Logo](admin/mihome-airpurifier.png)
+# ioBroker.mihome-airpurifier
 
 Xiaomi Air Purifier adapter for ioBroker IoT platform.
 
