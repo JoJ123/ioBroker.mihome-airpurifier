@@ -118,7 +118,7 @@ function _initObjects() {
     common: {
       name: AIR_PURIFIER_MODE_SILENT,
       type: "boolean",
-      role: "button.start",
+      role: "button.mode.silent",
       read: false,
       write: true
     }
@@ -128,7 +128,7 @@ function _initObjects() {
     common: {
       name: AIR_PURIFIER_MODE_AUTO,
       type: "boolean",
-      role: "button.start",
+      role: "button.mode.auto",
       read: false,
       write: true
     }
@@ -138,7 +138,7 @@ function _initObjects() {
     common: {
       name: AIR_PURIFIER_MODE_FAVORITE,
       type: "boolean",
-      role: "button.start",
+      role: "button.mode.favorite",
       read: false,
       write: true
     }
