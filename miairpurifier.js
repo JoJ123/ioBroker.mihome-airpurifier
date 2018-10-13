@@ -9,9 +9,6 @@ const {
   AIR_PURIFIER_TEMPERATURE,
   AIR_PURIFIER_HUMIDITY,
   AIR_PURIFIER_MODE,
-  AIR_PURIFIER_BUZZER,
-  AIR_PURIFIER_LED,
-  AIR_PURIFIER_LEDBRIGHTNESS,
   AIR_PURIFIER_FAVORITELEVEL,
   AIR_PURIFIER_PM25
 } = require(__dirname + "/miairpurifierconstants");
@@ -19,21 +16,25 @@ const {
 module.exports = class miairpurifier extends require("events").EventEmitter {
   constructor(adapter) {
     super();
+
+    adapter.log.debug("config ip: " + adapter.config.ipaddress);
+    adapter.log.debug("config token: " + adapter.config.token);
+
     this.ipaddress = adapter.config.ipaddress;
     if (!this.ipaddress) {
-      throw new Error("xiaomiairpurifier needs an ip address");
+      adapter.log.error("xiaomiairpurifier needs an ip address, take default IP: 127.0.0.1");
+      this.ipaddress = "127.0.0.1";
     }
 
     this.token = adapter.config.token;
     if (!this.token) {
-      throw new Error("xiaomiairpurifier needs a token");
+      adapter.log.error("xiaomiairpurifier needs a token, take empty token");
+      this.token = "";
     }
 
     this.miio = require("miio");
     this.promise = require("es6-promise");
 
-    adapter.log.debug("config ip: " + adapter.config.ipaddress);
-    adapter.log.debug("config token: " + adapter.config.token);
 
     this.adapter = adapter;
   }
