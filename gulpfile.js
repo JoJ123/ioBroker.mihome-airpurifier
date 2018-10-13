@@ -388,7 +388,7 @@ gulp.task('rename', function ()  {
 
     console.log('Try to rename to "' + newname + '"');
     if (!newname) {
-        console.log('Please write the new xiaomiairpurifier name, like: "gulp rename --name mywidgetset" --author "Author Name"');
+        console.log('Please write the new mihome-airpurifier name, like: "gulp rename --name mywidgetset" --author "Author Name"');
         process.exit();
     }
     if (newname.indexOf(' ') !== -1) {
@@ -399,30 +399,21 @@ gulp.task('rename', function ()  {
         console.log('Name must be lower case.');
         process.exit();
     }
-    if (fs.existsSync(__dirname + '/admin/xiaomiairpurifier.png')) {
-        fs.renameSync(__dirname + '/admin/xiaomiairpurifier.png',              __dirname + '/admin/' + newname + '.png');
-    }
-    if (fs.existsSync(__dirname + '/widgets/xiaomiairpurifier.html')) {
-        fs.renameSync(__dirname + '/widgets/xiaomiairpurifier.html',           __dirname + '/widgets/' + newname + '.html');
-    }
-    if (fs.existsSync(__dirname + '/widgets/xiaomiairpurifier/js/xiaomiairpurifier.js')) {
-        fs.renameSync(__dirname + '/widgets/xiaomiairpurifier/js/xiaomiairpurifier.js', __dirname + '/widgets/xiaomiairpurifier/js/' + newname + '.js');
-    }
-    if (fs.existsSync(__dirname + '/widgets/xiaomiairpurifier')) {
-        fs.renameSync(__dirname + '/widgets/xiaomiairpurifier',                __dirname + '/widgets/' + newname);
+    if (fs.existsSync(__dirname + '/admin/mihome-airpurifier.png')) {
+        fs.renameSync(__dirname + '/admin/mihome-airpurifier.png',              __dirname + '/admin/' + newname + '.png');
     }
     var patterns = [
         {
-            match: /xiaomiairpurifier/g,
+            match: /mihome-airpurifier/g,
             replacement: newname
         },
         {
-            match: /xiaomiairpurifier/g,
+            match: /mihome-airpurifier/g,
             replacement: newname
         },
         {
-            match: /Xiaomiairpurifier/g,
-            replacement: newname ? (newname[0].toUpperCase() + newname.substring(1)) : 'Xiaomiairpurifier'
+            match: /mihome-airpurifier/g,
+            replacement: newname ? (newname[0].toUpperCase() + newname.substring(1)) : 'Mihome-airpurifier'
         },
         {
             match: /Johannes Jaeger/g,
