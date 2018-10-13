@@ -110,7 +110,12 @@ function _initObjects() {
       type: "string",
       role: "text",
       read: true,
-      write: false
+      write: false,
+      states: {
+        'auto': 'Auto',
+        'silent': 'Night',
+        'favorite': 'Manual'
+      }
     }
   });
   adapter.setObjectNotExists(AIR_PURIFIER_MODE_SILENT, {
