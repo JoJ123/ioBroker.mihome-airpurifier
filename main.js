@@ -121,9 +121,9 @@ function _initObjects() {
   adapter.setObjectNotExists(AIR_PURIFIER_MODE_SILENT, {
     type: "state",
     common: {
-      name: AIR_PURIFIER_MODE_SILENT,
+      name: "Night Mode",
       type: "boolean",
-      role: "button.mode.silent",
+      role: "button.mode.night",
       read: false,
       write: true
     }
@@ -131,7 +131,7 @@ function _initObjects() {
   adapter.setObjectNotExists(AIR_PURIFIER_MODE_AUTO, {
     type: "state",
     common: {
-      name: AIR_PURIFIER_MODE_AUTO,
+      name: "Auto Mode",
       type: "boolean",
       role: "button.mode.auto",
       read: false,
@@ -141,9 +141,9 @@ function _initObjects() {
   adapter.setObjectNotExists(AIR_PURIFIER_MODE_FAVORITE, {
     type: "state",
     common: {
-      name: AIR_PURIFIER_MODE_FAVORITE,
+      name: "Manual Mode",
       type: "boolean",
-      role: "button.mode.favorite",
+      role: "button.mode.manual",
       read: false,
       write: true
     }
