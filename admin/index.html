@@ -2,7 +2,7 @@
 <!-- This file is deprecated!!!!! Please use index_m.html -->
 <!-- This file is required only for backward compatibility and will be deleted soon -->
 <!-- these 4 files always have to be included -->
-<link rel="stylesheet" type="text/css" href="../../lib/css/themes/jquery-ui/redmond/jquery-ui.min.css"/>
+<link rel="stylesheet" type="text/css" href="../../lib/css/themes/jquery-ui/redmond/jquery-ui.min.css" />
 <script type="text/javascript" src="../../lib/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="../../socket.io/socket.io.js"></script>
 <script type="text/javascript" src="../../lib/js/jquery-ui-1.10.3.full.min.js"></script>
@@ -20,7 +20,7 @@
 -->
 
 <!-- these two file always have to be included -->
-<link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>
+<link rel="stylesheet" type="text/css" href="../../css/adapter.css" />
 <script type="text/javascript" src="../../js/translate.js"></script>
 <script type="text/javascript" src="../../js/adapter-settings.js"></script>
 <script type="text/javascript" src="words.js"></script>
@@ -32,20 +32,20 @@
     // the function loadSettings has to exist ...
     function load(settings, onChange) {
         // example: select elements with id=key and class=value and insert value
-       if (!settings) return;
+        if (!settings) return;
         $('.value').each(function () {
             var $key = $(this);
             var id = $key.attr('id');
             if ($key.attr('type') === 'checkbox') {
-		// do not call onChange direct, because onChange could expect some arguments
-                $key.prop('checked', settings[id]).change(function() {
+                // do not call onChange direct, because onChange could expect some arguments
+                $key.prop('checked', settings[id]).change(function () {
                     onChange();
                 });
             } else {
-		// do not call onChange direct, because onChange could expect some arguments
-                $key.val(settings[id]).change(function() {
+                // do not call onChange direct, because onChange could expect some arguments
+                $key.val(settings[id]).change(function () {
                     onChange();
-                }).keyup(function() {
+                }).keyup(function () {
                     onChange();
                 });
             }
@@ -60,11 +60,11 @@
         var obj = {};
         $('.value').each(function () {
             var $this = $(this);
-			if ($this.attr('type') === 'checkbox') {
-				obj[$this.attr('id')] = $this.prop('checked');
-			} else {
-				obj[$this.attr('id')] = $this.val();
-			}
+            if ($this.attr('type') === 'checkbox') {
+                obj[$this.attr('id')] = $this.prop('checked');
+            } else {
+                obj[$this.attr('id')] = $this.val();
+            }
         });
         callback(obj);
     }
@@ -73,13 +73,24 @@
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
 
-    <table><tr>
-        <td><img src="mihome-airpurifier.png"/></td>
-        <td><h3 class="translate">mihome-airpurifier adapter settings</h3></td>
-    </tr></table>
+    <table>
+        <tr>
+            <td><img src="mihome-airpurifier.png" /></td>
+            <td>
+                <h3 class="translate">mihome-airpurifier adapter settings</h3>
+            </td>
+        </tr>
+    </table>
     <p>
-        <span><label for="ipaddress" class="translate">IP-Address:</label></span><input class="value" type="string" id="ipaddress"/><br>
-        <span><label for="token" class="translate">Token:</label></span><input class="value" type="string" id="token"/><br>
+        <span><label for="ipaddress" class="translate">IP-Address:</label></span><input class="value" type="string" id="ipaddress" /><br>
+        <span><label for="token" class="translate">Token:</label></span><input class="value" type="string" id="token" /><br>
+        <span><label for="token" class="translate">Version:</label></span>
+        <fieldset>
+            <input type="radio" id="air2" name="air" value="2">
+            <label for="air2">2</label>
+            <input type="radio" id="air2s" name="air" value="2S">
+            <label for="air2s">2S</label>            
+        </fieldset><br>
     </p>
 
     <p class="translate">on save adapter restarts with new config immediately</p>
