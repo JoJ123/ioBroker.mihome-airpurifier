@@ -9,7 +9,7 @@ const {
   AIR_PURIFIER_TEMPERATURE,
   AIR_PURIFIER_HUMIDITY,
   AIR_PURIFIER_MODE,
-  AIR_PURIFIER_FAVORITELEVEL,
+  AIR_PURIFIER_MANUALLEVEL,
   AIR_PURIFIER_PM25
 } = require(__dirname + "/miairpurifierconstants");
 
@@ -22,7 +22,9 @@ module.exports = class miairpurifier extends require("events").EventEmitter {
 
     this.ipaddress = adapter.config.ipaddress;
     if (!this.ipaddress) {
-      adapter.log.error("mihome-airpurifier needs an ip address, take default IP: 127.0.0.1");
+      adapter.log.error(
+        "mihome-airpurifier needs an ip address, take default IP: 127.0.0.1"
+      );
       this.ipaddress = "127.0.0.1";
     }
 
@@ -34,7 +36,6 @@ module.exports = class miairpurifier extends require("events").EventEmitter {
 
     this.miio = require("miio");
     this.promise = require("es6-promise");
-
 
     this.adapter = adapter;
   }
@@ -61,23 +62,17 @@ module.exports = class miairpurifier extends require("events").EventEmitter {
   }
 
   subscribeToValues() {
-    this.device.on('power', isOn =>
-      this.emit(AIR_PURIFIER_POWER, isOn)
-    );
-    this.device.on('modeChanged', mode =>
-      this.emit(AIR_PURIFIER_MODE, mode)
-    );
-    this.device.on('temperaturChanged', temp =>
+    this.device.on("power", isOn => this.emit(AIR_PURIFIER_POWER, isOn));
+    this.device.on("modeChanged", mode => this.emit(AIR_PURIFIER_MODE, mode));
+    this.device.on("temperatureChanged", temp =>
       this.emit(AIR_PURIFIER_TEMPERATURE, temp)
     );
-    this.device.on('relativeHumidityChanged', rh =>
+    this.device.on("relativeHumidityChanged", rh =>
       this.emit(AIR_PURIFIER_HUMIDITY, rh)
     );
-    this.device.on('pm2.5Changed', pm25 =>
-      this.emit(AIR_PURIFIER_PM25, pm25)
-    );
-    this.device.on('favoriteLevelChanged', favoriteLevel =>
-      this.emit(AIR_PURIFIER_FAVORITELEVEL, favoriteLevel)
+    this.device.on("pm2.5Changed", pm25 => this.emit(AIR_PURIFIER_PM25, pm25));
+    this.device.on("favoriteLevelChanged", favoriteLevel =>
+      this.emit(AIR_PURIFIER_MANUALLEVEL, favoriteLevel)
     );
   }
 
@@ -96,16 +91,21 @@ module.exports = class miairpurifier extends require("events").EventEmitter {
       .catch(err =>
         this.emit(AIR_PURIFIER_ERROR, "no " + AIR_PURIFIER_MODE + " data")
       );
+    // // Life Remaining
+    // this.device
+    //   .filterLifeRemaining()
+    //   .then(filterLifeRemaining => this.emit(AIR_PURIFIER_FILTERLIFE, filterLifeRemaining))
+    //   .catch(err =>
+    //     this.emit(AIR_PURIFIER_FILTERLIFE, "no " + AIR_PURIFIER_FILTERLIFE + " data")
+    //   );
     // Favorite Level
     this.device
       .favoriteLevel()
-      .then(favoriteLevel =>
-        this.emit(AIR_PURIFIER_FAVORITELEVEL, favoriteLevel)
-      )
+      .then(favoriteLevel => this.emit(AIR_PURIFIER_MANUALLEVEL, favoriteLevel))
       .catch(err =>
         this.emit(
           AIR_PURIFIER_ERROR,
-          "no " + AIR_PURIFIER_FAVORITELEVEL + " data"
+          "no " + AIR_PURIFIER_MANUALLEVEL + " data"
         )
       );
     // Temperature
@@ -135,12 +135,14 @@ module.exports = class miairpurifier extends require("events").EventEmitter {
   }
 
   setPower(isOn) {
-    this.device.power(isOn)
+    this.device.power(isOn);
   }
 
   setMode(mode) {
-    if (['auto', 'silent', 'favorite'].some(possibleMode => possibleMode === mode)) {
-      this.device.setMode(mode)
+    if (
+      ["auto", "silent", "favorite"].some(possibleMode => possibleMode === mode)
+    ) {
+      this.device.setMode(mode);
     }
   }
 
