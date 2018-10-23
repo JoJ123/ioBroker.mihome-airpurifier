@@ -12,7 +12,7 @@ Now you have two options:
 
     You connect the purifier with MI Home App to your Wifi Network and then run the following command:
 
-    `npm discover`
+    `miio discover`
 
     You should get the following output and can save the token.
 
@@ -28,11 +28,11 @@ Now you have two options:
 
     You reset the WIFI settings of the air purifier. Then you connect your network with the WIFI of the air purifier and run the following command:
 
-    `npm discover`
+    `miio discover`
 
     You should get the same output as above and can now configure the connection to your network by follwing command:
 
-    `miio id-or-address configure --ssid ssid-of-network --passwd password-of-network`
+    `miio configure id-or-address --ssid ssid-of-network --passwd password-of-network`
 
     Now the air purifier is connected to your network.
 
