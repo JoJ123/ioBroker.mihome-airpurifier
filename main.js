@@ -224,18 +224,18 @@ function _connect() {
 function _setupListeners() {
   // Power
   purifier.addListener(AIR_PURIFIER_POWER, function (power) {
-    adapter.log.info(AIR_PURIFIER_POWER + ": " + power);
+    adapter.log.debug(AIR_PURIFIER_POWER + ": " + power);
     _setState(AIR_PURIFIER_CONTROL + AIR_PURIFIER_POWER, power);
   });
   // Mode
   purifier.addListener(AIR_PURIFIER_MODE, function (mode) {
-    adapter.log.info(AIR_PURIFIER_MODE + ": " + mode);
+    adapter.log.debug(AIR_PURIFIER_MODE + ": " + mode);
     _setModeState(AIR_PURIFIER_INFORMATION + AIR_PURIFIER_MODE, mode);
   });
   // Favorite Level
   purifier.addListener(AIR_PURIFIER_MANUALLEVEL, function (favorite) {
     
-    adapter.log.info(AIR_PURIFIER_MANUALLEVEL + ": " + favorite);
+    adapter.log.debug(AIR_PURIFIER_MANUALLEVEL + ": " + favorite);
     let maxValue = 14;
     if (adapter.config.air2) {
       maxValue = 16;
@@ -247,18 +247,18 @@ function _setupListeners() {
   });
   // Temperature
   purifier.addListener(AIR_PURIFIER_TEMPERATURE, function (temp) {
-    adapter.log.info(AIR_PURIFIER_TEMPERATURE + ": " + temp);
+    adapter.log.debug(AIR_PURIFIER_TEMPERATURE + ": " + temp);
     const tempNumber = temp.toString().substring(0, temp.toString().length - 2);
     _setState(AIR_PURIFIER_INFORMATION + AIR_PURIFIER_TEMPERATURE, tempNumber);
   });
   // Relative Humidity
   purifier.addListener(AIR_PURIFIER_HUMIDITY, function (rh) {
-    adapter.log.info(AIR_PURIFIER_HUMIDITY + ": " + rh);
+    adapter.log.debug(AIR_PURIFIER_HUMIDITY + ": " + rh);
     _setState(AIR_PURIFIER_INFORMATION + AIR_PURIFIER_HUMIDITY, rh);
   });
   // PM 2.5
   purifier.addListener(AIR_PURIFIER_PM25, function (pm25) {
-    adapter.log.info(AIR_PURIFIER_PM25 + ": " + pm25);
+    adapter.log.debug(AIR_PURIFIER_PM25 + ": " + pm25);
     _setState(AIR_PURIFIER_INFORMATION + AIR_PURIFIER_PM25, pm25);
   });
 }
