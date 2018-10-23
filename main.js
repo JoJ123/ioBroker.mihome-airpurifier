@@ -4,6 +4,7 @@
 
 const {
   AIR_PURIFIER_INFORMATION,
+  AIR_PURIFIER_CONTROL,
   AIR_PURIFIER_ERROR,
   AIR_PURIFIER_POWER,
   AIR_PURIFIER_MODE,
@@ -47,23 +48,23 @@ adapter.on("stateChange", function (id, state) {
   // you can use the ack flag to detect if it is status (true) or command (false)
   if (state && !state.ack) {
     switch (id) {
-      case namespace + AIR_PURIFIER_POWER:
+      case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_POWER:
         purifier.setPower(state.val);
         break;
 
-      case namespace + AIR_PURIFIER_MODE_NIGHT:
+      case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_MODE_NIGHT:
         _setMode(AIR_PURIFIER_MODE_NIGHT);
         break;
 
-      case namespace + AIR_PURIFIER_MODE_AUTO:
+      case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_MODE_AUTO:
         _setMode(AIR_PURIFIER_MODE_AUTO);
         break;
 
-      case namespace + AIR_PURIFIER_MODE_MANUAL:
+      case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_MODE_MANUAL:
         _setMode(AIR_PURIFIER_MODE_MANUAL);
         break;
 
-      case namespace + AIR_PURIFIER_MANUALLEVEL:
+      case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_MANUALLEVEL:
         _setManual(state.val);
         break;
     }
@@ -93,7 +94,7 @@ adapter.on("ready", function () {
 });
 
 function _initObjects() {
-  adapter.setObjectNotExists(AIR_PURIFIER_POWER, {
+  adapter.setObjectNotExists(AIR_PURIFIER_CONTROL + AIR_PURIFIER_POWER, {
     type: "state",
     common: {
       name: "Power On/Off",
@@ -118,7 +119,7 @@ function _initObjects() {
       }
     }
   });
-  adapter.setObjectNotExists(AIR_PURIFIER_MODE_NIGHT, {
+  adapter.setObjectNotExists(AIR_PURIFIER_CONTROL + AIR_PURIFIER_MODE_NIGHT, {
     type: "state",
     common: {
       name: "Night Mode",
@@ -128,7 +129,7 @@ function _initObjects() {
       write: true
     }
   });
-  adapter.setObjectNotExists(AIR_PURIFIER_MODE_AUTO, {
+  adapter.setObjectNotExists(AIR_PURIFIER_CONTROL + AIR_PURIFIER_MODE_AUTO, {
     type: "state",
     common: {
       name: "Auto Mode",
@@ -138,7 +139,7 @@ function _initObjects() {
       write: true
     }
   });
-  adapter.setObjectNotExists(AIR_PURIFIER_MODE_MANUAL, {
+  adapter.setObjectNotExists(AIR_PURIFIER_CONTROL + AIR_PURIFIER_MODE_MANUAL, {
     type: "state",
     common: {
       name: "Manual Mode",
@@ -148,7 +149,7 @@ function _initObjects() {
       write: true
     }
   });
-  adapter.setObjectNotExists(AIR_PURIFIER_MANUALLEVEL, {
+  adapter.setObjectNotExists(AIR_PURIFIER_CONTROL + AIR_PURIFIER_MANUALLEVEL, {
     type: "state",
     common: {
       name: "Manual Level",
@@ -195,18 +196,6 @@ function _initObjects() {
       write: false
     }
   });
-  // adapter.setObjectNotExists(
-  //   AIR_PURIFIER_INFORMATION + AIR_PURIFIER_FILTERLIFE, {
-  //     type: "state",
-  //     common: {
-  //       name: "Remaining Filter Life",
-  //       type: "number",
-  //       role: "value",
-  //       read: true,
-  //       write: false
-  //     }
-  //   }
-  // );
 }
 
 function _connect() {
@@ -235,14 +224,18 @@ function _connect() {
 function _setupListeners() {
   // Power
   purifier.addListener(AIR_PURIFIER_POWER, function (power) {
-    _setState(AIR_PURIFIER_POWER, power);
+    adapter.log.info(AIR_PURIFIER_POWER + ": " + power);
+    _setState(AIR_PURIFIER_CONTROL + AIR_PURIFIER_POWER, power);
   });
   // Mode
   purifier.addListener(AIR_PURIFIER_MODE, function (mode) {
+    adapter.log.info(AIR_PURIFIER_MODE + ": " + mode);
     _setModeState(AIR_PURIFIER_INFORMATION + AIR_PURIFIER_MODE, mode);
   });
   // Favorite Level
   purifier.addListener(AIR_PURIFIER_MANUALLEVEL, function (favorite) {
+    
+    adapter.log.info(AIR_PURIFIER_MANUALLEVEL + ": " + favorite);
     let maxValue = 14;
     if (adapter.config.air2) {
       maxValue = 16;
@@ -250,25 +243,24 @@ function _setupListeners() {
       maxValue = 14;
     }
     const value = Math.floor((favorite / maxValue) * 100);
-    _setState(AIR_PURIFIER_MANUALLEVEL, value);
+    _setState(AIR_PURIFIER_CONTROL + AIR_PURIFIER_MANUALLEVEL, value);
   });
   // Temperature
   purifier.addListener(AIR_PURIFIER_TEMPERATURE, function (temp) {
+    adapter.log.info(AIR_PURIFIER_TEMPERATURE + ": " + temp);
     const tempNumber = temp.toString().substring(0, temp.toString().length - 2);
     _setState(AIR_PURIFIER_INFORMATION + AIR_PURIFIER_TEMPERATURE, tempNumber);
   });
   // Relative Humidity
   purifier.addListener(AIR_PURIFIER_HUMIDITY, function (rh) {
+    adapter.log.info(AIR_PURIFIER_HUMIDITY + ": " + rh);
     _setState(AIR_PURIFIER_INFORMATION + AIR_PURIFIER_HUMIDITY, rh);
   });
   // PM 2.5
   purifier.addListener(AIR_PURIFIER_PM25, function (pm25) {
+    adapter.log.info(AIR_PURIFIER_PM25 + ": " + pm25);
     _setState(AIR_PURIFIER_INFORMATION + AIR_PURIFIER_PM25, pm25);
   });
-  // // Filter Life Remaining
-  // purifier.addListener(AIR_PURIFIER_FILTERLIFE, function (life) {
-  //   _setState(AIR_PURIFIER_INFORMATION + AIR_PURIFIER_FILTERLIFE, life);
-  // });
 }
 
 function _setMode(mode) {
@@ -286,7 +278,7 @@ function _setMode(mode) {
   }
   if (modeSend) {
     purifier.setMode(modeSend);
-    _setState(AIR_PURIFIER_POWER, true);
+    _setState(AIR_PURIFIER_CONTROL + AIR_PURIFIER_POWER, true);
   }
 }
 
@@ -316,13 +308,8 @@ function _setManual(stateVal) {
     maxValue = 14;
   }
   const value = Math.ceil((stateVal / 100) * maxValue);
-  if (value > 0) {
-    purifier.setFavoriteLevel(value);
-    _setMode(AIR_PURIFIER_MODE_MANUAL);
-  } else {
-    purifier.setPower(false);
-    _setState(AIR_PURIFIER_POWER, false);
-  }
+  purifier.setFavoriteLevel(value);
+  _setMode(AIR_PURIFIER_MODE_MANUAL);
 }
 
 function _setState(state, value) {
