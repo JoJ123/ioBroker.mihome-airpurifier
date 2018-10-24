@@ -37,7 +37,7 @@ Now you have two options:
     Now the air purifier is connected to your network.
 
 ## Cloud Connection
-To control the Air Purifier with the cloud adapter just add the state "favoritelevel" to your Cloud Adapter. After that you can send f.e. the following commands through Alexa:
+To control the Air Purifier with the cloud adapter just add the state "manuallevel" to your Cloud Adapter. After that you can send f.e. the following commands through Alexa:
 
 *Alexa, turn the air purifier on*,
 
@@ -56,8 +56,8 @@ To control your air purifier, the following objects can be written:
 | power          | Turn the device on / off  |
 | auto           | Activate the auto mode of the device. |
 | silent         | Activate the silent mode of the device. |
-| favorite       | Activate the favorite mode of the device. |
-| favoriteLevel  | Control the power of the favorite mode in the range from 0-100%. This will also turn on / off the device if neccessary |
+| manual         | Activate the manual mode of the device. |
+| manuallevel    | Control the power of the manual mode in the range from 0-100%. This will also turn on / off the device if neccessary |
 
 ## Info States
 The following information is collected from your air purifier (read-only states):
