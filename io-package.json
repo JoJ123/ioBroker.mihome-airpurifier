@@ -37,6 +37,23 @@
         "messagebox": false
     },
     "native": {},
+    "instanceObjects": [{
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Air Purifier Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "control",
+            "type": "channel",
+            "common": {
+                "name": "Air Purifier Control"
+            },
+            "native": {}
+        }
+    ],
     "objects": [
 
     ]
