@@ -28,7 +28,6 @@
 
 <!-- you have to define 2 functions in the global scope: -->
 <script type="text/javascript">
-
     // the function loadSettings has to exist ...
     function load(settings, onChange) {
         // example: select elements with id=key and class=value and insert value
@@ -89,8 +88,10 @@
             <input type="radio" id="air2" name="air" value="2">
             <label for="air2">2</label>
             <input type="radio" id="air2s" name="air" value="2S">
-            <label for="air2s">2S</label>            
+            <label for="air2s">2S</label>
         </fieldset><br>
+        <span><label for="reconnectTime" class="translate">Time to reconnect in seconds (0 means disable):</label></span><input
+            class="value" type="number" id="reconnectTime" /><br>
     </p>
 
     <p class="translate">on save adapter restarts with new config immediately</p>

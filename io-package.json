@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "mihome-airpurifier",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "news": {
+            "0.0.2": {
+                "en": "auto reconnect",
+                "de": "Auto Verbindungsaufbau"
+            },
             "0.0.1": {
                 "en": "initial adapter",
                 "de": "Initiale Version"

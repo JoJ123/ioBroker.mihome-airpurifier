@@ -21,6 +21,8 @@ const utils = require(__dirname + "/lib/utils");
 const adapter = new utils.Adapter("mihome-airpurifier");
 const miairpurifier = require(__dirname + "/miairpurifier");
 let purifier;
+let isConnected = false;
+let reconnectTimeout;
 
 // is called when adapter shuts down - callback has to be called under any circumstances!
 adapter.on("unload", function (callback) {
@@ -47,26 +49,30 @@ adapter.on("stateChange", function (id, state) {
 
   // you can use the ack flag to detect if it is status (true) or command (false)
   if (state && !state.ack) {
-    switch (id) {
-      case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_POWER:
-        purifier.setPower(state.val);
-        break;
+    if (isConnected) {
+      switch (id) {
+        case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_POWER:
+          _setPower(state.val)
+          break;
 
-      case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_MODE_NIGHT:
-        _setMode(AIR_PURIFIER_MODE_NIGHT);
-        break;
+        case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_MODE_NIGHT:
+          _setMode(AIR_PURIFIER_MODE_NIGHT);
+          break;
 
-      case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_MODE_AUTO:
-        _setMode(AIR_PURIFIER_MODE_AUTO);
-        break;
+        case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_MODE_AUTO:
+          _setMode(AIR_PURIFIER_MODE_AUTO);
+          break;
 
-      case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_MODE_MANUAL:
-        _setMode(AIR_PURIFIER_MODE_MANUAL);
-        break;
+        case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_MODE_MANUAL:
+          _setMode(AIR_PURIFIER_MODE_MANUAL);
+          break;
 
-      case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_MANUALLEVEL:
-        _setManual(state.val);
-        break;
+        case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_MANUALLEVEL:
+          _setManual(state.val);
+          break;
+      }
+    } else {
+      adapter.log.debug("Not yet connected.");
     }
   }
 });
@@ -198,12 +204,13 @@ function _initObjects() {
   });
 }
 
-function _connect() {
+function _connect(command) {
   adapter.log.info("Connecting...");
   purifier.removeAllListeners();
   purifier.addListener(AIR_PURIFIER_ERROR, function (error) {
     adapter.log.error(error);
   });
+  clearTimeout(reconnectTimeout);
   purifier
     .connect()
     .then(function (status) {
@@ -212,13 +219,34 @@ function _connect() {
         _setupListeners();
         purifier.checkInitValues();
         purifier.subscribeToValues();
+        isConnected = true;
+        if (command) {
+          command();
+        }
       } else {
-        adapter.log.error(status);
+        adapter.log.error("Wronge device type");
       }
     })
     .catch(function (error) {
-      adapter.log.error(error);
+      adapter.log.info("Error while connecting");
+      reconnect(false);
     });
+}
+
+function reconnect(withoutTimeout, command) {
+  isConnected = false;
+  if (withoutTimeout) {
+    adapter.log.info("Retry connection & command");
+    _connect(command);
+  } else {
+    var interval = adapter.config.reconnectTime * 1000;
+    if (interval > 0) {
+      adapter.log.info("Retry in " + adapter.config.reconnectTime + " second(s)");
+      reconnectTimeout = setTimeout(function () {
+        _connect(command);
+      }, interval);
+    }
+  }
 }
 
 function _setupListeners() {
@@ -234,7 +262,6 @@ function _setupListeners() {
   });
   // Favorite Level
   purifier.addListener(AIR_PURIFIER_MANUALLEVEL, function (favorite) {
-    
     adapter.log.debug(AIR_PURIFIER_MANUALLEVEL + ": " + favorite);
     let maxValue = 14;
     if (adapter.config.air2) {
@@ -263,7 +290,7 @@ function _setupListeners() {
   });
 }
 
-function _setMode(mode) {
+function _setMode(mode, favoriteLevel) {
   let modeSend;
   switch (mode) {
     case AIR_PURIFIER_MODE_AUTO:
@@ -277,8 +304,20 @@ function _setMode(mode) {
       break;
   }
   if (modeSend) {
-    purifier.setMode(modeSend);
-    _setState(AIR_PURIFIER_CONTROL + AIR_PURIFIER_POWER, true);
+    purifier.setMode(modeSend).then(result => {
+        if (result) {
+          _setModeState(AIR_PURIFIER_INFORMATION + AIR_PURIFIER_MODE, mode)
+          _setState(AIR_PURIFIER_CONTROL + AIR_PURIFIER_POWER, true);
+          if (favoriteLevel) {
+            purifier.setFavoriteLevel(favoriteLevel);
+          }
+        } else {
+          reconnect(true, () => _setMode(mode, favoriteLevel));
+        }
+      })
+      .catch(err => {
+        reconnect(true, () => _setMode(mode, favoriteLevel));
+      })
   }
 }
 
@@ -300,6 +339,19 @@ function _setModeState(mode, value) {
   }
 }
 
+function _setPower(power) {
+  purifier.setPower(power).then(result => {
+      if (result) {
+        _setState(AIR_PURIFIER_CONTROL + AIR_PURIFIER_POWER, power);
+      } else {
+        reconnect(true, () => _setPower(power));
+      }
+    })
+    .catch(err => {
+      reconnect(true, () => _setPower(power));
+    })
+}
+
 function _setManual(stateVal) {
   let maxValue = 14;
   if (adapter.config.air2) {
@@ -308,8 +360,7 @@ function _setManual(stateVal) {
     maxValue = 14;
   }
   const value = Math.ceil((stateVal / 100) * maxValue);
-  purifier.setFavoriteLevel(value);
-  _setMode(AIR_PURIFIER_MODE_MANUAL);
+  _setMode(AIR_PURIFIER_MODE_MANUAL, value);
 }
 
 function _setState(state, value) {

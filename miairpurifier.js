@@ -53,11 +53,11 @@ module.exports = class miairpurifier extends require("events").EventEmitter {
         if (device.matches("type:air-purifier")) {
           return true;
         } else {
-          return "Wronge device type!";
+          return false;
         }
       })
       .catch(err => {
-        return "Can't connect to device.";
+        throw new Error(err)
       });
   }
 
@@ -128,20 +128,26 @@ module.exports = class miairpurifier extends require("events").EventEmitter {
   }
 
   setPower(isOn) {
-    this.device.power(isOn);
+    return this.device.power(isOn)
+      .then(result => result === isOn)
+      .catch(err => false);
   }
 
   setMode(mode) {
     if (
       ["auto", "silent", "favorite"].some(possibleMode => possibleMode === mode)
     ) {
-      this.device.setMode(mode);
+      return this.device
+        .setMode(mode)
+        .then(result => result === mode)
+        .catch(err => false);
     }
+    return false;
   }
 
   setFavoriteLevel(favoriteLevel) {
     if (favoriteLevel >= 0 && favoriteLevel <= 14) {
-      this.device.setFavoriteLevel(favoriteLevel);
+      this.device.setFavoriteLevel(favoriteLevel)
     }
   }
 };
