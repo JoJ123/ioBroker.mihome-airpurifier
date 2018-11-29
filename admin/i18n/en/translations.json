@@ -1,5 +1,6 @@
 {
-  "IP-Address:": "IP-Address:",
+  "ipaddress": "IP-Address:",
   "Token:": "Token:",
+  "Time to reconnect in seconds (0 means disable):": "Time to reconnect in seconds (0 means disable):",
   "on save adapter restarts with new config immediately": "on save adapter restarts with new config immediately."
 }
