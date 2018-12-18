@@ -1,17 +1,15 @@
 {
   "name": "iobroker.mihome-airpurifier",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "mihome-airpurifier",
   "author": {
     "name": "Johannes Jaeger",
     "email": "johannesjaegeroffice@gmail.com"
   },
-  "contributors": [
-    {
-      "name": "Johannes Jaeger",
-      "email": "johannesjaegeroffice@gmail.com"
-    }
-  ],
+  "contributors": [{
+    "name": "Johannes Jaeger",
+    "email": "johannesjaegeroffice@gmail.com"
+  }],
   "homepage": "https://github.com/JoJ123/ioBroker.mihome-airpurifier",
   "license": "MIT",
   "keywords": [

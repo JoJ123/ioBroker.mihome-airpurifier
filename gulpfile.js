@@ -1,10 +1,10 @@
 'use strict';
 
-var gulp      = require('gulp');
-var fs        = require('fs');
-var pkg       = require('./package.json');
+var gulp = require('gulp');
+var fs = require('fs');
+var pkg = require('./package.json');
 var iopackage = require('./io-package.json');
-var version   = (pkg && pkg.version) ? pkg.version : iopackage.common.version;
+var version = (pkg && pkg.version) ? pkg.version : iopackage.common.version;
 /*var appName   = getAppName();
 
 function getAppName() {
@@ -13,7 +13,7 @@ function getAppName() {
 }
 */
 const fileName = 'words.js';
-var languages =  {
+var languages = {
     en: {},
     de: {},
     ru: {},
@@ -82,9 +82,11 @@ function readWordJs(src) {
         return null;
     }
 }
+
 function padRight(text, totalLength) {
     return text + (text.length < totalLength ? new Array(totalLength - text.length).join(' ') : '');
 }
+
 function writeWordJs(data, src) {
     var text = '';
     text += '/*global systemDictionary:true */\n';
@@ -156,6 +158,7 @@ function words2languages(src) {
         console.error('Cannot read or parse ' + fileName);
     }
 }
+
 function words2languagesFlat(src) {
     var langs = Object.assign({}, languages);
     var data = readWordJs(src);
@@ -201,6 +204,7 @@ function words2languagesFlat(src) {
         console.error('Cannot read or parse ' + fileName);
     }
 }
+
 function languagesFlat2words(src) {
     var dirs = fs.readdirSync(src + 'i18n/');
     var langs = {};
@@ -269,6 +273,7 @@ function languagesFlat2words(src) {
 
     writeWordJs(bigOne, src);
 }
+
 function languages2words(src) {
     var dirs = fs.readdirSync(src + 'i18n/');
     var langs = {};
@@ -371,10 +376,10 @@ gulp.task('updatePackages', function (done) {
     done();
 });
 
-gulp.task('rename', function ()  {
+gulp.task('rename', function () {
     var newname;
     var author = 'Johannes Jaeger';
-    var email  = 'johannesjaegeroffice@gmail.com';
+    var email = 'johannesjaegeroffice@gmail.com';
     for (var a = 0; a < process.argv.length; a++) {
         if (process.argv[a] === '--name') {
             newname = process.argv[a + 1]
@@ -400,10 +405,9 @@ gulp.task('rename', function ()  {
         process.exit();
     }
     if (fs.existsSync(__dirname + '/admin/mihome-airpurifier.png')) {
-        fs.renameSync(__dirname + '/admin/mihome-airpurifier.png',              __dirname + '/admin/' + newname + '.png');
+        fs.renameSync(__dirname + '/admin/mihome-airpurifier.png', __dirname + '/admin/' + newname + '.png');
     }
-    var patterns = [
-        {
+    var patterns = [{
             match: /mihome-airpurifier/g,
             replacement: newname
         },
@@ -431,11 +435,11 @@ gulp.task('rename', function ()  {
         __dirname + '/README.md',
         __dirname + '/main.js',
         __dirname + '/gulpfile.js',
-        __dirname + '/widgets/' + newname +'.html',
+        __dirname + '/widgets/' + newname + '.html',
         __dirname + '/www/index.html',
         __dirname + '/admin/index.html',
         __dirname + '/admin/index_m.html',
-        __dirname + '/widgets/' + newname + '/js/' + newname +'.js',
+        __dirname + '/widgets/' + newname + '/js/' + newname + '.js',
         __dirname + '/widgets/' + newname + '/css/style.css'
     ];
     files.forEach(function (f) {
@@ -458,7 +462,7 @@ gulp.task('updateReadme', function (done) {
     var pos = readme.indexOf('## Changelog\n');
     if (pos !== -1) {
         var readmeStart = readme.substring(0, pos + '## Changelog\n'.length);
-        var readmeEnd   = readme.substring(pos + '## Changelog\n'.length);
+        var readmeEnd = readme.substring(pos + '## Changelog\n'.length);
 
         if (readme.indexOf(version) === -1) {
             var timestamp = new Date();

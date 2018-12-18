@@ -1,4 +1,6 @@
 {
-  "ipaddress": "IP-Adresse:",
+  "ipaddress": "IP-Addresse:",
+  "Token:": "Token:",
+  "Time to reconnect in seconds (0 means disable):": "Verbindungsversuch alle X Sekunden (0 deaktiviert):",
   "on save adapter restarts with new config immediately": "Beim Speichern von Einstellungen der Adapter wird sofort neu gestartet."
 }
