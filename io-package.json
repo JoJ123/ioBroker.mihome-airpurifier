@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "mihome-airpurifier",
-        "version": "0.0.2",
+        "version": "0.0.3",
         "news": {
+            "0.0.3": {
+                "en": "npm release",
+                "de": "npm Veröffentlichung"
+            },
             "0.0.2": {
                 "en": "auto reconnect",
                 "de": "Auto Verbindungsaufbau"
