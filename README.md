@@ -73,6 +73,9 @@ The following information is collected from your air purifier (read-only states)
 | pm25        | The air polution in PM2.5. |
 
 ## Changelog
+### 0.0.4 (02.01.2019)
+* (JoJ123) update type
+
 ### 0.0.3 (18.12.2018)
 * (JoJ123) npm release
 

@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "mihome-airpurifier",
-        "version": "0.0.3",
+        "version": "0.0.4",
         "news": {
+            "0.0.4": {
+                "en": "update type",
+                "de": "Typ Aktualisiert"
+            },
             "0.0.3": {
                 "en": "npm release",
                 "de": "npm Veröffentlichung"
@@ -40,7 +44,7 @@
         "keywords": ["mihome-airpurifier", "xiaomi", "air", "purifier"],
         "readme": "https://github.com/JoJ123/ioBroker.mihome-airpurifier/blob/master/README.md",
         "loglevel": "info",
-        "type": "general",
+        "type": "climate-control",
         "license": "MIT",
         "messagebox": false
     },
