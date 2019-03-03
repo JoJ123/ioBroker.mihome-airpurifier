@@ -17,7 +17,7 @@ const {
   AIR_PURIFIER_PM25
 } = require(__dirname + "/miairpurifierconstants");
 
-const utils = require(__dirname + "/lib/utils");
+const utils = require('@iobroker/adapter-core');
 const adapter = new utils.Adapter("mihome-airpurifier");
 const miairpurifier = require(__dirname + "/miairpurifier");
 let purifier;
