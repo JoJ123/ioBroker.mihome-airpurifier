@@ -31,7 +31,7 @@ Now you have two options:
 
     `miio discover`
 
-    You should get the same output as above and can now configure the connection to your network by follwing command:
+    You should get the same output as above and can now configure the connection to your network by following command:
 
     `miio configure id-or-address --ssid ssid-of-network --passwd password-of-network`
 
@@ -46,7 +46,7 @@ To control the Air Purifier with the cloud adapter just add the state "manuallev
 
 *Alexa, turn the air purifier off*
 
-If you set in the Cloud adapter the "On Value" to "Last active value" the device allways start running in the latest acitve power level.
+If you set in the Cloud adapter the "On Value" to "Last active value" the device always start running in the latest active power level.
 
 
 ## Control States
@@ -58,7 +58,7 @@ To control your air purifier, the following objects can be written:
 | auto           | Activate the auto mode of the device. |
 | silent         | Activate the silent mode of the device. |
 | manual         | Activate the manual mode of the device. |
-| manuallevel    | Control the power of the manual mode in the range from 0-100%. This will also turn on / off the device if neccessary |
+| manuallevel    | Control the power of the manual mode in the range from 0-100%. This will also turn on / off the device if necessary |
 
 ## Info States
 The following information is collected from your air purifier (read-only states):
@@ -68,8 +68,8 @@ The following information is collected from your air purifier (read-only states)
 | State       | Description |
 | :---        | :---        |
 | mode        | The actual device mode, just valid, if the device is powered on. |
-| temperature | The messured temperature in °C of the device. |
-| humidity    | The messured relative humidity in % of the device. |
+| temperature | The measured temperature in °C of the device. |
+| humidity    | The measured relative humidity in % of the device. |
 | pm25        | The air pollution in PM2.5. |
 
 ## Changelog
