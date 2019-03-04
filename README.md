@@ -70,7 +70,7 @@ The following information is collected from your air purifier (read-only states)
 | mode        | The actual device mode, just valid, if the device is powered on. |
 | temperature | The messured temperature in °C of the device. |
 | humidity    | The messured relative humidity in % of the device. |
-| pm25        | The air polution in PM2.5. |
+| pm25        | The air pollution in PM2.5. |
 
 ## Changelog
 ### 0.0.5 (06.01.2019)
