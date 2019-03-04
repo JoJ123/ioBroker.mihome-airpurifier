@@ -46,7 +46,7 @@ To control the Air Purifier with the cloud adapter just add the state "manuallev
 
 *Alexa, turn the air purifier off*
 
-If you set in the Cloud adapter the "On Value" to "Last active value" the device always start running in the latest active power level.
+If you set in the Cloud adapter the "On Value" to "Last active value", the device always start running in the latest active power level.
 
 
 ## Control States
