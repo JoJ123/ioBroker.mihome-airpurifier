@@ -195,7 +195,7 @@ function _initObjects() {
   adapter.setObjectNotExists(AIR_PURIFIER_INFORMATION + AIR_PURIFIER_PM25, {
     type: "state",
     common: {
-      name: "Polution in PM2.5",
+      name: "Pollution in PM2.5",
       type: "number",
       role: "value",
       read: true,
