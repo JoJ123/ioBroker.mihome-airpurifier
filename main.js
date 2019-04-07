@@ -21,6 +21,8 @@ const {
   AIR_PURIFIER_PM25
 } = require(__dirname + "/miairpurifierconstants");
 
+const fs = require('fs');
+
 const utils = require('@iobroker/adapter-core');
 let adapter;
 const miairpurifier = require(__dirname + "/miairpurifier");
@@ -69,7 +71,7 @@ function startAdapter(options) {
     },
     unload: function (callback) {
       // Versuch 1
-      // fs.writeFile('message.txt', "Test2", (err) => {
+      // fs.writeFile('message1.txt', "Unload", (err) => {
       //   if (err) throw err;
       //   console.log('The file has been saved!');
       // });
@@ -79,6 +81,12 @@ function startAdapter(options) {
       // callback();
     },
     ready: function () {
+      // Versuch 1
+      // fs.writeFile('message2.txt', "Ready", (err) => {
+      //   if (err) throw err;
+      //   console.log('The file has been saved!');
+      // });
+      // Versuch 2
       fs.writeFileSync("message2.txt", "Ready");
       main();
     }
