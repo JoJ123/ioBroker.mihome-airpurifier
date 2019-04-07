@@ -35,7 +35,6 @@ module.exports = class miairpurifier extends require("events").EventEmitter {
     }
 
     this.miio = require("miio");
-    this.promise = require("es6-promise");
 
     this.adapter = adapter;
   }

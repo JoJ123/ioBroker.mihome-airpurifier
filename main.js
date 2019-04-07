@@ -1,6 +1,10 @@
-/* jshint -W097 */ // jshint strict:false
-/*jslint node: true */
-"use strict";
+/* jshint -W097 */
+/* jshint strict:false */
+/* global require */
+/* global RRule */
+/* global __dirname */
+/* jslint node: true */
+'use strict';
 
 const {
   AIR_PURIFIER_INFORMATION,
@@ -18,86 +22,70 @@ const {
 } = require(__dirname + "/miairpurifierconstants");
 
 const utils = require('@iobroker/adapter-core');
-const adapter = new utils.Adapter("mihome-airpurifier");
+let adapter;
 const miairpurifier = require(__dirname + "/miairpurifier");
 let purifier;
 let isConnected = false;
 let reconnectTimeout;
 
-// is called when adapter shuts down - callback has to be called under any circumstances!
-adapter.on("unload", function (callback) {
-  try {
-    adapter.log.info("cleaned everything up...");
-    callback();
-  } catch (e) {
-    callback();
-  }
-});
+function startAdapter(options) {
+  options = options || {};
+  Object.assign(options, {
+    name: "mihome-airpurifier",
+    stateChange: function (id, state) {
+      // Warning, state can be null if it was deleted
+      adapter.log.debug("stateChange " + id + " " + JSON.stringify(state));
 
-// is called if a subscribed object changes
-adapter.on("objectChange", function (id, obj) {
-  // Warning, obj can be null if it was deleted
-  adapter.log.debug("objectChange " + id + " " + JSON.stringify(obj));
-});
+      var namespace = adapter.namespace + ".";
 
-// is called if a subscribed state changes
-adapter.on("stateChange", function (id, state) {
-  // Warning, state can be null if it was deleted
-  adapter.log.debug("stateChange " + id + " " + JSON.stringify(state));
+      // you can use the ack flag to detect if it is status (true) or command (false)
+      if (state && !state.ack) {
+        if (isConnected) {
+          switch (id) {
+            case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_POWER:
+              _setPower(state.val)
+              break;
 
-  var namespace = adapter.namespace + ".";
+            case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_MODE_NIGHT:
+              _setMode(AIR_PURIFIER_MODE_NIGHT);
+              break;
 
-  // you can use the ack flag to detect if it is status (true) or command (false)
-  if (state && !state.ack) {
-    if (isConnected) {
-      switch (id) {
-        case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_POWER:
-          _setPower(state.val)
-          break;
+            case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_MODE_AUTO:
+              _setMode(AIR_PURIFIER_MODE_AUTO);
+              break;
 
-        case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_MODE_NIGHT:
-          _setMode(AIR_PURIFIER_MODE_NIGHT);
-          break;
+            case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_MODE_MANUAL:
+              _setMode(AIR_PURIFIER_MODE_MANUAL);
+              break;
 
-        case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_MODE_AUTO:
-          _setMode(AIR_PURIFIER_MODE_AUTO);
-          break;
-
-        case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_MODE_MANUAL:
-          _setMode(AIR_PURIFIER_MODE_MANUAL);
-          break;
-
-        case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_MANUALLEVEL:
-          _setManual(state.val);
-          break;
+            case namespace + AIR_PURIFIER_CONTROL + AIR_PURIFIER_MANUALLEVEL:
+              _setManual(state.val);
+              break;
+          }
+        } else {
+          adapter.log.debug("Not yet connected.");
+        }
       }
-    } else {
-      adapter.log.debug("Not yet connected.");
+    },
+    unload: function (callback) {
+      callback();
+    },
+    ready: function () {
+      main();
     }
-  }
-});
+  })
 
-// Some message was sent to adapter instance over message box. Used by email, pushover, text2speech, ...
-adapter.on("message", function (obj) {
-  if (typeof obj === "object" && obj.message) {
-    if (obj.command === "send") {
-      // e.g. send email or pushover or whatever
-      console.log("send command");
+  adapter = new utils.Adapter(options);
 
-      // Send response in callback if required
-      if (obj.callback)
-        adapter.sendTo(obj.from, obj.command, "Message received", obj.callback);
-    }
-  }
-});
+  return adapter;
+}
 
-// is called when databases are connected and adapter received configuration.
-adapter.on("ready", function () {
+function main() {
   _initObjects();
   adapter.subscribeStates("*");
   purifier = new miairpurifier(adapter);
   _connect();
-});
+}
 
 function _initObjects() {
   adapter.setObjectNotExists(AIR_PURIFIER_CONTROL + AIR_PURIFIER_POWER, {
@@ -305,16 +293,16 @@ function _setMode(mode, favoriteLevel) {
   }
   if (modeSend) {
     purifier.setMode(modeSend).then(result => {
-        if (result) {
-          _setModeState(AIR_PURIFIER_INFORMATION + AIR_PURIFIER_MODE, mode)
-          _setState(AIR_PURIFIER_CONTROL + AIR_PURIFIER_POWER, true);
-          if (favoriteLevel) {
-            purifier.setFavoriteLevel(favoriteLevel);
-          }
-        } else {
-          reconnect(true, () => _setMode(mode, favoriteLevel));
+      if (result) {
+        _setModeState(AIR_PURIFIER_INFORMATION + AIR_PURIFIER_MODE, mode)
+        _setState(AIR_PURIFIER_CONTROL + AIR_PURIFIER_POWER, true);
+        if (favoriteLevel) {
+          purifier.setFavoriteLevel(favoriteLevel);
         }
-      })
+      } else {
+        reconnect(true, () => _setMode(mode, favoriteLevel));
+      }
+    })
       .catch(err => {
         reconnect(true, () => _setMode(mode, favoriteLevel));
       })
@@ -341,12 +329,12 @@ function _setModeState(mode, value) {
 
 function _setPower(power) {
   purifier.setPower(power).then(result => {
-      if (result) {
-        _setState(AIR_PURIFIER_CONTROL + AIR_PURIFIER_POWER, power);
-      } else {
-        reconnect(true, () => _setPower(power));
-      }
-    })
+    if (result) {
+      _setState(AIR_PURIFIER_CONTROL + AIR_PURIFIER_POWER, power);
+    } else {
+      reconnect(true, () => _setPower(power));
+    }
+  })
     .catch(err => {
       reconnect(true, () => _setPower(power));
     })
@@ -369,3 +357,11 @@ function _setState(state, value) {
     ack: true
   });
 }
+
+// If started as allInOne/compact mode => return function to create instance
+if (module && module.parent) {
+  module.exports = startAdapter;
+} else {
+  // or start the instance directly
+  startAdapter();
+} 
