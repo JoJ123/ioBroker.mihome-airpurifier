@@ -39,6 +39,12 @@ module.exports = class miairpurifier extends require("events").EventEmitter {
     this.adapter = adapter;
   }
 
+  disconnect() {
+    if (this.device) {
+      this.device.destroy();
+    }
+  }
+
   connect() {
     let instance = this;
 

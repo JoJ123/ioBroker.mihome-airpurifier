@@ -68,6 +68,9 @@ function startAdapter(options) {
       }
     },
     unload: function (callback) {
+      if (purifier) {
+        purifier.disconnect();
+      }
       callback();
     },
     ready: function () {
