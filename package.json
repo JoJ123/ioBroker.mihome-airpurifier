@@ -6,10 +6,12 @@
     "name": "Johannes Jaeger",
     "email": "johannesjaegeroffice@gmail.com"
   },
-  "contributors": [{
-    "name": "Johannes Jaeger",
-    "email": "johannesjaegeroffice@gmail.com"
-  }],
+  "contributors": [
+    {
+      "name": "Johannes Jaeger",
+      "email": "johannesjaegeroffice@gmail.com"
+    }
+  ],
   "homepage": "https://github.com/JoJ123/ioBroker.mihome-airpurifier",
   "license": "MIT",
   "keywords": [
@@ -27,16 +29,22 @@
     "url": "https://github.com/JoJ123/ioBroker.mihome-airpurifier"
   },
   "dependencies": {
-    "miio": "^0.15.6"
+    "miio": "^0.15.6",
+    "es6-promise": "^4.2.6",
+    "@iobroker/adapter-core": "^1.0.3"
   },
   "devDependencies": {
     "chai": "^4.1.2",
     "gulp": "^4.0.0",
-    "mocha": "^4.1.0"
+    "mocha": "^4.1.0",
+    "@iobroker/testing": "^1.1.10"
   },
   "main": "main.js",
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha --exit"
+    "test": "npm run test:package && npm run test:unit",
+    "test:package": "mocha test/package --exit",
+    "test:unit": "mocha test/unit --exit",
+    "test:integration": "mocha test/integration --exit"
   },
   "bugs": {
     "url": "https://github.com/JoJ123/ioBroker.mihome-airpurifier/issues"
