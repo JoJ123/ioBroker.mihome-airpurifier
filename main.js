@@ -68,14 +68,18 @@ function startAdapter(options) {
       }
     },
     unload: function (callback) {
-      adapter.log.info("unload");
-      if (purifier) {
-        adapter.log.info("unload2");
-        purifier.disconnect();
-      }
-      callback();
+      // Versuch 1
+      // fs.writeFile('message.txt', "Test2", (err) => {
+      //   if (err) throw err;
+      //   console.log('The file has been saved!');
+      // });
+      // Versuch 2
+      fs.writeFileSync("message1.txt", "Unload");
+      setTimeout(callback, 500);
+      // callback();
     },
     ready: function () {
+      fs.writeFileSync("message2.txt", "Ready");
       main();
     }
   })
