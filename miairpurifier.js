@@ -41,6 +41,7 @@ module.exports = class miairpurifier extends require("events").EventEmitter {
 
   disconnect() {
     if (this.device) {
+      this.adapter.log.info("Unsubscribe from device.")
       this.device.destroy();
     }
   }
