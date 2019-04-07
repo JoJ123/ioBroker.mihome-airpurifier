@@ -68,7 +68,9 @@ function startAdapter(options) {
       }
     },
     unload: function (callback) {
+      adapter.log.info("unload");
       if (purifier) {
+        adapter.log.info("unload2");
         purifier.disconnect();
       }
       callback();
