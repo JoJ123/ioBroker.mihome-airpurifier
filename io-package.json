@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "mihome-airpurifier",
-        "version": "0.0.5",
+        "version": "0.0.6",
         "news": {
+            "0.0.6": {
+                "en": "update miio to the fork of Sineos",
+                "de": "Update miio auf fork von Sineos"
+            },
             "0.0.5": {
                 "en": "update natives",
                 "de": "Initial Werte angepasst"

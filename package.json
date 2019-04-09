@@ -1,6 +1,6 @@
 {
   "name": "iobroker.mihome-airpurifier",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "mihome-airpurifier",
   "author": {
     "name": "Johannes Jaeger",
@@ -29,7 +29,7 @@
     "url": "https://github.com/JoJ123/ioBroker.mihome-airpurifier"
   },
   "dependencies": {
-    "miio": "jghaanstra/miio#master",
+    "miio": "Sineos/miio#master",
     "es6-promise": "^4.2.6",
     "@iobroker/adapter-core": "^1.0.3"
   },
