@@ -35,9 +35,16 @@ module.exports = class miairpurifier extends require("events").EventEmitter {
     }
 
     this.miio = require("miio");
-    this.promise = require("es6-promise");
 
     this.adapter = adapter;
+  }
+
+  disconnect() {
+    this.adapter.log.info("Unsubscribe from device1.")
+    if (this.device) {
+      this.adapter.log.info("Unsubscribe from device2.")
+      this.device.destroy();
+    }
   }
 
   connect() {
