@@ -70,24 +70,9 @@ function startAdapter(options) {
       }
     },
     unload: function (callback) {
-      // Versuch 1
-      // fs.writeFile('message1.txt', "Unload", (err) => {
-      //   if (err) throw err;
-      //   console.log('The file has been saved!');
-      // });
-      // Versuch 2
-      fs.writeFileSync("message1.txt", "Unload");
-      setTimeout(callback, 500);
-      // callback();
+      callback();
     },
     ready: function () {
-      // Versuch 1
-      // fs.writeFile('message2.txt', "Ready", (err) => {
-      //   if (err) throw err;
-      //   console.log('The file has been saved!');
-      // });
-      // Versuch 2
-      fs.writeFileSync("message2.txt", "Ready");
       main();
     }
   })
