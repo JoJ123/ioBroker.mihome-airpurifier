@@ -29,7 +29,6 @@
     "url": "https://github.com/JoJ123/ioBroker.mihome-airpurifier"
   },
   "dependencies": {
-    "fs": "0.0.1-security",
     "miio": "Sineos/miio#master",
     "es6-promise": "^4.2.6",
     "@iobroker/adapter-core": "^1.0.3"
