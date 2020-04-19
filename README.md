@@ -4,7 +4,7 @@
 ![Logo](admin/mihome-airpurifier.png)
 # ioBroker.mihome-airpurifier
 ![Number of Installations](http://iobroker.live/badges/mihome-airpurifier-installed.svg) ![Number of Installations](http://iobroker.live/badges/mihome-airpurifier-stable.svg) 
-Xiaomi Air Purifier adapter for ioBroker IoT platform.
+Xiaomi Air Purifier adapter for ioBroker IoT platform.[![Build Status](https://travis-ci.org/JoJ123/ioBroker.mihome-airpurifier.svg?branch=master)](https://travis-ci.org/JoJ123/ioBroker.mihome-airpurifier)
 
 ## How to get the token?
 You have to install the miio command line tool
