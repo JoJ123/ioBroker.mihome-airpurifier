@@ -24,8 +24,8 @@
   },
   "dependencies": {
     "@iobroker/adapter-core": "2.2.1",
-    "miio": "Sineos/miio#master",
-    "es6-promise": "4.2.6"
+    "es6-promise": "4.2.6",
+    "miio": "github:Sineos/miio#master"
   },
   "devDependencies": {
     "@iobroker/testing": "2.1.0",
@@ -50,7 +50,7 @@
     "rimraf": "3.0.2",
     "sinon-chai": "3.5.0",
     "sinon": "8.1.1",
-    "source-map-support": "0.5.16",
+    "source-map-support": "0.5.17",
     "ts-node": "8.6.2",
     "typescript": "3.8.3"
   },

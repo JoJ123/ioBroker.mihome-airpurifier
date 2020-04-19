@@ -77,7 +77,7 @@ The following information is collected from your air purifier (read-only states)
 
 ## Changelog
 ### 0.1.0 (18.04.2020)
-* (JoJ123) update to typescript
+* (JoJ123) move to typescript
 
 ### 0.0.6 (09.04.2019)
 * (JoJ123) update miio to fork of Sineos
