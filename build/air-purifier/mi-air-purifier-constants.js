@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.EVENT_AIR_PURIFIER_ERROR = "error";
+exports.EVENT_AIR_PURIFIER_POWER = "power";
+exports.EVENT_AIR_PURIFIER_MODE = "mode";
+exports.EVENT_AIR_PURIFIER_MODE_NIGHT = "night";
+exports.EVENT_AIR_PURIFIER_MODE_AUTO = "auto";
+exports.EVENT_AIR_PURIFIER_MODE_MANUAL = "manual";
+exports.EVENT_AIR_PURIFIER_MANUALLEVEL = "manuallevel";
+exports.EVENT_AIR_PURIFIER_TEMPERATURE = "temperature";
+exports.EVENT_AIR_PURIFIER_HUMIDITY = "humidity";
+exports.EVENT_AIR_PURIFIER_PM25 = "pm25";
+exports.EVENT_AIR_PURIFIER_ERROR_LOG = "error";
+exports.EVENT_AIR_PURIFIER_DEBUG_LOG = "debug";
+exports.EVENT_AIR_PURIFIER_INFO_LOG = "info";

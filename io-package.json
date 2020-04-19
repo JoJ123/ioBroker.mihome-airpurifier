@@ -1,8 +1,12 @@
 {
-    "common": {
+	"common": {
         "name": "mihome-airpurifier",
-        "version": "0.0.6",
-        "news": {
+		"version": "0.1.0",
+		"news": {
+            "0.1.0": {
+                "en": "move to typescript",
+                "de": "Umstieg auf typescript"
+            },
             "0.0.6": {
                 "en": "update miio to the fork of Sineos",
                 "de": "Update miio auf fork von Sineos"
@@ -23,42 +27,90 @@
                 "en": "auto reconnect",
                 "de": "Auto Verbindungsaufbau"
             },
-            "0.0.1": {
-                "en": "initial adapter",
-                "de": "Initiale Version"
-            }
-        },
+			"0.0.1": {
+				"en": "initial release",
+                "de": "Initiale Version",
+				"ru": "Начальная версия",
+				"pt": "lançamento inicial",
+				"nl": "Eerste uitgave",
+				"fr": "Première version",
+				"it": "Versione iniziale",
+				"es": "Versión inicial",
+				"pl": "Pierwsze wydanie",
+				"zh-cn": "首次出版"
+			}
+		},
         "title": "MiHome-Air-Purifier",
-        "titleLang": {
+		"titleLang": {
             "en": "Xiaomi Air Purifier",
-            "de": "Xiaomi Luftfilter"
-        },
-        "desc": {
+            "de": "Xiaomi Luftfilter",
+			"ru": "Шаблон (TypeScript)",
+			"pt": "Modelo (TypeScript)",
+			"nl": "Sjabloon (TypeScript)",
+			"fr": "Modèle (TypeScript)",
+			"it": "Modello (TypeScript)",
+			"es": "Plantilla (TypeScript)",
+			"pl": "Szablon (TypeScript)",
+			"zh-cn": "模板（TypeScript）"
+		},
+		"desc": {
             "en": "Controll your Xiaomi Air Purifier",
-            "de": "Steuere deinen Xiaomi Air Purifier"
-        },
-        "authors": [
+            "de": "Steuere deinen Xiaomi Air Purifier",
+			"ru": "Шаблон для разработки адаптера",
+			"pt": "Modelo para desenvolvimento de adaptadores",
+			"nl": "Sjabloon voor adapterontwikkeling",
+			"fr": "Modèle de développement d'adaptateur",
+			"it": "Modello per lo sviluppo dell'adattatore",
+			"es": "Plantilla para desarrollo de adaptadores",
+			"pl": "Szablon do opracowania adaptera",
+			"zh-cn": "适配器开发的模板"
+		},
+		"authors": [
             "Johannes Jaeger <johannesjaegeroffice@gmail.com>"
-        ],
-        "platform": "Javascript/Node.js",
-        "mode": "daemon",
-        "icon": "mihome-airpurifier.png",
-        "materialize": true,
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/JoJ123/ioBroker.mihome-airpurifier/master/admin/mihome-airpurifier.png",
-        "keywords": [
+		],
+		"keywords": [
             "mihome-airpurifier",
             "xiaomi",
             "air",
             "purifier"
         ],
+		"license": "MIT",
+		"platform": "Javascript/Node.js",
+		"main": "build/main.js",
+        "icon": "mihome-airpurifier.png",
+		"enabled": true,
+		"extIcon": "https://raw.githubusercontent.com/JoJ123/ioBroker.mihome-airpurifier/master/admin/mihome-airpurifier.png",		
         "readme": "https://github.com/JoJ123/ioBroker.mihome-airpurifier/blob/master/README.md",
-        "loglevel": "info",
+		"loglevel": "info",
+		"mode": "daemon",
         "type": "climate-control",
-        "license": "MIT",
-        "messagebox": false,
-        "compact": true
-    },
+		"compact": true,
+		"materialize": true,
+		"materializeTab": true,
+		"adminTab": {
+			"singleton": true,
+			"name": {
+				"en": "Template (TypeScript)",
+				"de": "Vorlage (TypeScript)",
+				"ru": "Шаблон (TypeScript)",
+				"pt": "Modelo (TypeScript)",
+				"nl": "Sjabloon (TypeScript)",
+				"fr": "Modèle (TypeScript)",
+				"it": "Modello (TypeScript)",
+				"es": "Plantilla (TypeScript)",
+				"pl": "Szablon (TypeScript)",
+				"zh-cn": "模板（TypeScript）"
+			},
+			"link": "",
+			"fa-icon": "info"
+		},
+		"supportCustoms": true,
+		"dependencies": [
+			{
+				"js-controller": ">=1.4.2"
+			}
+		]
+	},
     "native": {
         "address": "",
         "token": "",
@@ -66,7 +118,8 @@
         "air2": false,
         "reconnectTime": 60
     },
-    "instanceObjects": [
+	"objects": [],
+	"instanceObjects": [
         {
             "_id": "info",
             "type": "channel",
