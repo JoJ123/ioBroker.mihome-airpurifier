@@ -1,9 +1,9 @@
 {
 	"common": {
         "name": "mihome-airpurifier",
-		"version": "0.1.0",
+		"version": "0.1.1",
 		"news": {
-            "0.1.0": {
+            "0.1.1": {
                 "en": "move to typescript",
                 "de": "Umstieg auf typescript"
             },
