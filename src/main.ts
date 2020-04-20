@@ -335,6 +335,7 @@ class MiHomeAirPurifier extends utils.Adapter {
 	
 	async setMode(mode: string, favoriteLevel?: number): Promise<void> {
 		if (![STATE_AIR_PURIFIER_MODE_AUTO, STATE_AIR_PURIFIER_MODE_MANUAL, STATE_AIR_PURIFIER_MODE_NIGHT].some(possibleMode => possibleMode === mode)) {
+			this.log.info("node wrong" + mode);
 			return;
 		}
 		try {
