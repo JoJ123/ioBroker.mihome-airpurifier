@@ -299,9 +299,6 @@ class MiHomeAirPurifier extends utils.Adapter {
 	 */
 	private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
 		const namespace = this.namespace + "." + STATE_AIR_PURIFIER_CONTROL;
-		
-		if (state) {
-		}
   
 		if (state && !state.ack) {
 		  	if (this.isConnected) {
@@ -341,14 +338,16 @@ class MiHomeAirPurifier extends utils.Adapter {
 			return;
 		}
 		try {
-			await this.miAirPurifier.setMode(mode)
-			await this.setStateAsync(STATE_AIR_PURIFIER_INFORMATION + STATE_AIR_PURIFIER_MODE , mode, true);
-			await this.setStateAsync(STATE_AIR_PURIFIER_CONTROL + STATE_AIR_PURIFIER_POWER, true, true);
+			const a = await this.miAirPurifier.setMode(mode);
+			this.log.info("a: " + a);
+			// await this.setStateAsync(STATE_AIR_PURIFIER_INFORMATION + STATE_AIR_PURIFIER_MODE , mode, true);
+			// await this.setStateAsync(STATE_AIR_PURIFIER_CONTROL + STATE_AIR_PURIFIER_POWER, true, true);
 			
 			if (favoriteLevel) {
 				await this.miAirPurifier.setFavoriteLevel(favoriteLevel);
 			}
 		} catch(err) {
+			this.log.error(err);
 			this.reconnect(true, () => this.setMode(mode, favoriteLevel))
 			return;
 		}
