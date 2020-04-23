@@ -50,8 +50,27 @@ export class MiAirPurifier extends EventEmitter {
 		);
 	}
 
+	checkRegularValues(): void {
+		this.emit(EVENT_AIR_PURIFIER_DEBUG_LOG, `checkRegularValues`);
+		// Power
+		this.device
+			.power()
+			.then((isOn: any) => this.emit(EVENT_AIR_PURIFIER_POWER, isOn))
+			.catch((err: any) => this.emit(EVENT_AIR_PURIFIER_ERROR_LOG, `No ${EVENT_AIR_PURIFIER_POWER} data. Error: ${err}`));
+		// Mode
+		this.device
+			.mode()
+			.then((mode: any) => this.emit(EVENT_AIR_PURIFIER_MODE, mode))
+			.catch((err: any) => this.emit(EVENT_AIR_PURIFIER_ERROR_LOG, `No ${EVENT_AIR_PURIFIER_MODE} data. Error: ${err}`));
+		// Favorite Level
+		this.device
+			.favoriteLevel()
+			.then((favoriteLevel: any) => this.emit(EVENT_AIR_PURIFIER_MANUALLEVEL, favoriteLevel))
+			.catch((err: any) => this.emit(EVENT_AIR_PURIFIER_ERROR_LOG, `No ${EVENT_AIR_PURIFIER_MANUALLEVEL} data. Error: ${err}`));
+	}
+
 	checkInitValues(): void {
-		this.emit(EVENT_AIR_PURIFIER_DEBUG_LOG,`checkInitValues`);
+		this.emit(EVENT_AIR_PURIFIER_DEBUG_LOG, `checkInitValues`);
 		// Power
 		this.device
 			.power()
@@ -88,12 +107,12 @@ export class MiAirPurifier extends EventEmitter {
 		return this.device.power(power)
 	}
 
-	async setMode(mode: string): Promise<boolean> {
+	async setMode(mode: string | undefined): Promise<boolean> {
 		if (
 			["auto", "silent", "favorite"].some(possibleMode => possibleMode === mode)
 		) {
 			const result = await this.device.setMode(mode)
-			return result.mode === mode
+			return result === mode
 		}
 		return false;
 	}

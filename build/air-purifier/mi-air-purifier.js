@@ -50,6 +50,24 @@ class MiAirPurifier extends events_1.EventEmitter {
         this.device.on("pm2.5Changed", (pm25) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_PM25, pm25));
         this.device.on("favoriteLevel", (favoriteLevel) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MANUALLEVEL, favoriteLevel));
     }
+    checkRegularValues() {
+        this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_DEBUG_LOG, `checkRegularValues`);
+        // Power
+        this.device
+            .power()
+            .then((isOn) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_POWER, isOn))
+            .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_POWER} data. Error: ${err}`));
+        // Mode
+        this.device
+            .mode()
+            .then((mode) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MODE, mode))
+            .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MODE} data. Error: ${err}`));
+        // Favorite Level
+        this.device
+            .favoriteLevel()
+            .then((favoriteLevel) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MANUALLEVEL, favoriteLevel))
+            .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MANUALLEVEL} data. Error: ${err}`));
+    }
     checkInitValues() {
         this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_DEBUG_LOG, `checkInitValues`);
         // Power
@@ -90,7 +108,7 @@ class MiAirPurifier extends events_1.EventEmitter {
         return __awaiter(this, void 0, void 0, function* () {
             if (["auto", "silent", "favorite"].some(possibleMode => possibleMode === mode)) {
                 const result = yield this.device.setMode(mode);
-                return result.mode === mode;
+                return result === mode;
             }
             return false;
         });

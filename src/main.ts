@@ -25,6 +25,7 @@ class MiHomeAirPurifier extends utils.Adapter {
 	miAirPurifier: MiAirPurifier = new MiAirPurifier("", "");
 	reconnectInterval = 60;
 	reconnectTimeout: ReturnType<typeof setTimeout> | undefined;
+	checkRegularValuesInterval: ReturnType<typeof setInterval> | undefined;
 	isConnected = false;
 
 	public constructor(options: Partial<ioBroker.AdapterOptions> = {}) {
@@ -182,9 +183,10 @@ class MiHomeAirPurifier extends utils.Adapter {
 			const state = await this.miAirPurifier.connect()
 			if (state) {
 				this.log.info("Connected!");
+				this.isConnected = true;
 				this.miAirPurifier.checkInitValues();
 				this.miAirPurifier.subscribeToValues();
-				this.isConnected = true;
+				this.checkRegularValuesInterval = setInterval(this.miAirPurifier.checkRegularValues, 1000 * 120)
 				if (command) {
 					command();
 				}
@@ -201,11 +203,7 @@ class MiHomeAirPurifier extends utils.Adapter {
 		this.isConnected = false;
 		if (withoutTimeout) {
 			this.log.info("Retry connection");
-			if (command)  {
-				this.connect(command);
-			} else {
-				this.connect();
-			}
+			this.connect(command);
 		} else {
 			if (this.reconnectInterval > 0) {
 				this.log.info(`"Retry in ${this.config.reconnectTime} second(s)`);
@@ -239,12 +237,11 @@ class MiHomeAirPurifier extends utils.Adapter {
 
 		// Favorite Level
 		this.miAirPurifier.addListener(EVENT_AIR_PURIFIER_MANUALLEVEL, async (favorite: any) => {
-			let maxValue = 14;
+			let maxValue = 14; // air2s
 			if (this.config.air2) {
 				maxValue = 16;
-			} else if (this.config.air2s) {
-				maxValue = 14;
 			}
+
 		  	const value = Math.floor((favorite / maxValue) * 100);
 		  	this.log.debug(`${EVENT_AIR_PURIFIER_MANUALLEVEL}: ${value}`);
 		  	await this.setStateAsync(STATE_AIR_PURIFIER_CONTROL + STATE_AIR_PURIFIER_MANUALLEVEL, value, true);
@@ -275,6 +272,9 @@ class MiHomeAirPurifier extends utils.Adapter {
 	private onUnload(callback: () => void): void {
 		try {
 			this.log.info("cleaned everything up...");
+			if (this.checkRegularValuesInterval) {
+				clearInterval(this.checkRegularValuesInterval);
+			}
 			callback();
 		} catch (e) {
 			callback();
@@ -307,25 +307,24 @@ class MiHomeAirPurifier extends utils.Adapter {
 		  	if (this.isConnected) {
 				switch (id) {
 					case namespace + STATE_AIR_PURIFIER_POWER:
-						this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+						this.log.debug(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
 						this.setPower(!!state.val)
 						break;
 					case namespace + STATE_AIR_PURIFIER_MODE_NIGHT:
-						this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+						this.log.debug(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
 						this.setMode(STATE_AIR_PURIFIER_MODE_NIGHT)
 						break;
 					case namespace + STATE_AIR_PURIFIER_MODE_AUTO:
-						this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+						this.log.debug(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
 						this.setMode(STATE_AIR_PURIFIER_MODE_AUTO)
 						break;
 					case namespace + STATE_AIR_PURIFIER_MODE_MANUAL:
-						this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+						this.log.debug(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
 						this.setMode(STATE_AIR_PURIFIER_MODE_MANUAL)
 						break;
 					case namespace + STATE_AIR_PURIFIER_MANUALLEVEL:
-						this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+						this.log.debug(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
 						if (typeof state.val === "number") {
-							this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
 							this.setManual(state.val)
 						}
 						break;
@@ -337,20 +336,30 @@ class MiHomeAirPurifier extends utils.Adapter {
 	}
 	
 	async setMode(mode: string, favoriteLevel?: number): Promise<void> {
-		if (![STATE_AIR_PURIFIER_MODE_AUTO, STATE_AIR_PURIFIER_MODE_MANUAL, STATE_AIR_PURIFIER_MODE_NIGHT].some(possibleMode => possibleMode === mode)) {
-			return;
-		}
 		try {
-			await this.miAirPurifier.setMode(mode)
-			await this.setStateAsync(STATE_AIR_PURIFIER_INFORMATION + STATE_AIR_PURIFIER_MODE , mode, true);
-			await this.setStateAsync(STATE_AIR_PURIFIER_CONTROL + STATE_AIR_PURIFIER_POWER, true, true);
-			
-			if (favoriteLevel) {
-				await this.miAirPurifier.setFavoriteLevel(favoriteLevel);
+			let modeSend;
+			switch (mode) {
+			  case STATE_AIR_PURIFIER_MODE_AUTO:
+					modeSend = "auto";
+					break;
+			  case STATE_AIR_PURIFIER_MODE_NIGHT:
+					modeSend = "silent";
+					break;
+			  case STATE_AIR_PURIFIER_MODE_MANUAL:
+					modeSend = "favorite";
+					break;
 			}
+			this.log.debug("setMode: " + modeSend);
+			const result = await this.miAirPurifier.setMode(modeSend);
+			if (result) {
+
+				if (favoriteLevel) {
+					this.log.debug("setFavoriteLevel: " + favoriteLevel);
+					await this.miAirPurifier.setFavoriteLevel(favoriteLevel);
+				}
+			}			
 		} catch(err) {
-			this.reconnect(true, () => this.setMode(mode, favoriteLevel))
-			return;
+			this.log.error("setMode: Error:" + err.message);
 		}
 	}
   
@@ -365,6 +374,8 @@ class MiHomeAirPurifier extends utils.Adapter {
   
 	async setManual(stateVal: number): Promise<void> {
 		const maxValue = this.config.air2 ? 16 : 14;
+		stateVal = stateVal > 100 ? 100 : stateVal;
+		stateVal = stateVal < 0 ? 0 : stateVal;
 		const value = Math.ceil((stateVal / 100) * maxValue);
 
 		await this.setMode(STATE_AIR_PURIFIER_MODE_MANUAL, value);
