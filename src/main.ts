@@ -299,9 +299,6 @@ class MiHomeAirPurifier extends utils.Adapter {
 	 */
 	private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
 		const namespace = this.namespace + "." + STATE_AIR_PURIFIER_CONTROL;
-		
-		if (state) {
-		}
   
 		if (state && !state.ack) {
 		  	if (this.isConnected) {
