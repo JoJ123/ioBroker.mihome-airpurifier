@@ -67,18 +67,18 @@ class MiAirPurifier extends events_1.EventEmitter {
             .then((favoriteLevel) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MANUALLEVEL, favoriteLevel))
             .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MANUALLEVEL} data. Error: ${err}`));
         // Buzzer
-        if (typeof this.device.buzzer === "function") {
-            this.device
-                .buzzer()
-                .then((buzzer) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_BUZZER, buzzer))
-                .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_BUZZER} data. Error: ${err}`));
+        if (!!this.device.buzzer && typeof this.device.buzzer === "function") {
+            const buzzer = this.device.buzzer();
+            if (!!buzzer) {
+                this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_BUZZER, buzzer);
+            }
         }
         // Led
-        if (typeof this.device.led === "function") {
-            this.device
-                .led()
-                .then((led) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_LED, led))
-                .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_LED} data. Error: ${err}`));
+        if (!!this.device.led && typeof this.device.led === "function") {
+            const led = this.device.led();
+            if (!!led) {
+                this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_LED, led);
+            }
         }
     }
     checkInitValues() {
@@ -113,18 +113,18 @@ class MiAirPurifier extends events_1.EventEmitter {
             .then((pm25) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_PM25, pm25))
             .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_PM25} data. Error: ${err}`));
         // Buzzer
-        if (typeof this.device.buzzer === "function") {
-            this.device
-                .buzzer()
-                .then((buzzer) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_BUZZER, buzzer))
-                .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_BUZZER} data. Error: ${err}`));
+        if (!!this.device.buzzer && typeof this.device.buzzer === "function") {
+            const buzzer = this.device.buzzer();
+            if (!!buzzer) {
+                this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_BUZZER, buzzer);
+            }
         }
         // Led
-        if (typeof this.device.led === "function") {
-            this.device
-                .led()
-                .then((led) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_LED, led))
-                .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_LED} data. Error: ${err}`));
+        if (!!this.device.led && typeof this.device.led === "function") {
+            const led = this.device.led();
+            if (!!led) {
+                this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_LED, led);
+            }
         }
     }
     setPower(power) {
@@ -145,12 +145,12 @@ class MiAirPurifier extends events_1.EventEmitter {
         }
     }
     setBuzzer(buzzer) {
-        if (typeof this.device.buzzer === "function") {
+        if (!!this.device.buzzer && typeof this.device.buzzer === "function") {
             return this.device.buzzer(buzzer);
         }
     }
     setLed(led) {
-        if (typeof this.device.led === "function") {
+        if (!!this.device.led && typeof this.device.led === "function") {
             return this.device.led(led);
         }
     }

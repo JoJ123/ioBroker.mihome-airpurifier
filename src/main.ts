@@ -224,6 +224,7 @@ class MiHomeAirPurifier extends utils.Adapter {
 			}
 		}
 		catch (err) {
+			this.log.error(`Error after connecting: ${JSON.stringify(err.stack)}`);			
 			this.log.error(`Error after connecting: ${err.message}`);
 		}
 	}
@@ -454,5 +455,5 @@ if (module.parent) {
 	module.exports = (options: Partial<ioBroker.AdapterOptions> | undefined) => new MiHomeAirPurifier(options);
 } else {
 	// otherwise start the instance directly
-	(() => new MiHomeAirPurifier())();
+ 	(() => new MiHomeAirPurifier())();
 }

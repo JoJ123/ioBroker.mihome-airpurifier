@@ -211,6 +211,7 @@ class MiHomeAirPurifier extends utils.Adapter {
             }
         }
         catch (err) {
+            this.log.error(`Error after connecting: ${JSON.stringify(err.stack)}`);
             this.log.error(`Error after connecting: ${err.message}`);
         }
     }
