@@ -51,7 +51,6 @@ class MiAirPurifier extends events_1.EventEmitter {
         this.device.on("favoriteLevel", (favoriteLevel) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MANUALLEVEL, favoriteLevel));
     }
     checkRegularValues() {
-        this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_DEBUG_LOG, `checkRegularValues`);
         // Power
         this.device
             .power()
@@ -69,7 +68,6 @@ class MiAirPurifier extends events_1.EventEmitter {
             .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MANUALLEVEL} data. Error: ${err}`));
     }
     checkInitValues() {
-        this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_DEBUG_LOG, `checkInitValues`);
         // Power
         this.device
             .power()

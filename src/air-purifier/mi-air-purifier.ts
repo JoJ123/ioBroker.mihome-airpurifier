@@ -51,7 +51,6 @@ export class MiAirPurifier extends EventEmitter {
 	}
 
 	checkRegularValues(): void {
-		this.emit(EVENT_AIR_PURIFIER_DEBUG_LOG, `checkRegularValues`);
 		// Power
 		this.device
 			.power()
@@ -70,7 +69,6 @@ export class MiAirPurifier extends EventEmitter {
 	}
 
 	checkInitValues(): void {
-		this.emit(EVENT_AIR_PURIFIER_DEBUG_LOG, `checkInitValues`);
 		// Power
 		this.device
 			.power()

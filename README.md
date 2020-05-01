@@ -75,6 +75,9 @@ The following information is collected from your air purifier (read-only states)
 | `pm25`        | The air pollution in PM2.5. |
 
 ## Changelog
+### 0.1.2 (01.05.2020)
+* (JoJ123) bug fixing
+
 ### 0.1.1 (18.04.2020)
 * (JoJ123) move to typescript
 
