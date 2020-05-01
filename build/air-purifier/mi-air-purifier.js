@@ -73,6 +73,13 @@ class MiAirPurifier extends events_1.EventEmitter {
                 .then((buzzer) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_BUZZER, buzzer))
                 .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_BUZZER} data. Error: ${err}`));
         }
+        // Led
+        if (typeof this.device.led === "function") {
+            this.device
+                .led()
+                .then((led) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_LED, led))
+                .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_LED} data. Error: ${err}`));
+        }
     }
     checkInitValues() {
         // Power
@@ -112,6 +119,13 @@ class MiAirPurifier extends events_1.EventEmitter {
                 .then((buzzer) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_BUZZER, buzzer))
                 .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_BUZZER} data. Error: ${err}`));
         }
+        // Led
+        if (typeof this.device.led === "function") {
+            this.device
+                .led()
+                .then((led) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_LED, led))
+                .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_LED} data. Error: ${err}`));
+        }
     }
     setPower(power) {
         return this.device.power(power);
@@ -131,7 +145,14 @@ class MiAirPurifier extends events_1.EventEmitter {
         }
     }
     setBuzzer(buzzer) {
-        return this.device.buzzer(buzzer);
+        if (typeof this.device.buzzer === "function") {
+            return this.device.buzzer(buzzer);
+        }
+    }
+    setLed(led) {
+        if (typeof this.device.led === "function") {
+            return this.device.led(led);
+        }
     }
 }
 exports.MiAirPurifier = MiAirPurifier;

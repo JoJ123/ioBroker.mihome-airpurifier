@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 import * as miio from "miio";
-import { EVENT_AIR_PURIFIER_DEBUG_LOG, EVENT_AIR_PURIFIER_POWER, EVENT_AIR_PURIFIER_MODE, EVENT_AIR_PURIFIER_TEMPERATURE, EVENT_AIR_PURIFIER_HUMIDITY, EVENT_AIR_PURIFIER_MANUALLEVEL, EVENT_AIR_PURIFIER_ERROR_LOG, EVENT_AIR_PURIFIER_PM25, EVENT_AIR_PURIFIER_BUZZER } from "./mi-air-purifier-constants";
+import { EVENT_AIR_PURIFIER_DEBUG_LOG, EVENT_AIR_PURIFIER_POWER, EVENT_AIR_PURIFIER_MODE, EVENT_AIR_PURIFIER_TEMPERATURE, EVENT_AIR_PURIFIER_HUMIDITY, EVENT_AIR_PURIFIER_MANUALLEVEL, EVENT_AIR_PURIFIER_ERROR_LOG, EVENT_AIR_PURIFIER_PM25, EVENT_AIR_PURIFIER_BUZZER, EVENT_AIR_PURIFIER_LED } from "./mi-air-purifier-constants";
 
 export class MiAirPurifier extends EventEmitter {
 	ipAddress: string;
@@ -73,6 +73,13 @@ export class MiAirPurifier extends EventEmitter {
 				.then((buzzer: boolean) => this.emit(EVENT_AIR_PURIFIER_BUZZER, buzzer))
 				.catch((err: any) => this.emit(EVENT_AIR_PURIFIER_ERROR_LOG, `No ${EVENT_AIR_PURIFIER_BUZZER} data. Error: ${err}`));
 		}
+		// Led
+		if (typeof this.device.led === "function") {
+			this.device
+				.led()
+				.then((led: boolean) => this.emit(EVENT_AIR_PURIFIER_LED, led))
+				.catch((err: any) => this.emit(EVENT_AIR_PURIFIER_ERROR_LOG, `No ${EVENT_AIR_PURIFIER_LED} data. Error: ${err}`));
+		}
 	}
 
 	checkInitValues(): void {
@@ -113,6 +120,13 @@ export class MiAirPurifier extends EventEmitter {
 				.then((buzzer: boolean) => this.emit(EVENT_AIR_PURIFIER_BUZZER, buzzer))
 				.catch((err: any) => this.emit(EVENT_AIR_PURIFIER_ERROR_LOG, `No ${EVENT_AIR_PURIFIER_BUZZER} data. Error: ${err}`));
 		}
+		// Led
+		if (typeof this.device.led === "function") {
+			this.device
+				.led()
+				.then((led: boolean) => this.emit(EVENT_AIR_PURIFIER_LED, led))
+				.catch((err: any) => this.emit(EVENT_AIR_PURIFIER_ERROR_LOG, `No ${EVENT_AIR_PURIFIER_LED} data. Error: ${err}`));
+		}
 	}
 
 	setPower(power: boolean): Promise<boolean> {
@@ -135,7 +149,15 @@ export class MiAirPurifier extends EventEmitter {
 		}
 	}
 
-	setBuzzer(buzzer: boolean): Promise<boolean> {
-		return this.device.buzzer(buzzer)
+	setBuzzer(buzzer: boolean): Promise<boolean> | void {
+		if (typeof this.device.buzzer === "function") {
+			return this.device.buzzer(buzzer)
+		}
+	}
+
+	setLed(led: boolean): Promise<boolean> | void {
+		if (typeof this.device.led === "function") {
+			return this.device.led(led)
+		}
 	}
 };

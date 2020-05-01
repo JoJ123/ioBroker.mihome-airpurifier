@@ -12,3 +12,4 @@ exports.STATE_AIR_PURIFIER_TEMPERATURE = "temperature";
 exports.STATE_AIR_PURIFIER_HUMIDITY = "humidity";
 exports.STATE_AIR_PURIFIER_PM25 = "pm25";
 exports.STATE_AIR_PURIFIER_BUZZER = "buzzer";
+exports.STATE_AIR_PURIFIER_LED = "led";

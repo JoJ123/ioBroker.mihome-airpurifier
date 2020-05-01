@@ -9,6 +9,7 @@ export const EVENT_AIR_PURIFIER_TEMPERATURE = "temperature";
 export const EVENT_AIR_PURIFIER_HUMIDITY = "humidity";
 export const EVENT_AIR_PURIFIER_PM25 = "pm25";
 export const EVENT_AIR_PURIFIER_BUZZER = "buzzer";
+export const EVENT_AIR_PURIFIER_LED = "led";
 
 export const EVENT_AIR_PURIFIER_ERROR_LOG = "error";
 export const EVENT_AIR_PURIFIER_DEBUG_LOG = "debug";

@@ -165,6 +165,17 @@ class MiHomeAirPurifier extends utils.Adapter {
                 },
                 native: {}
             });
+            yield this.setObjectNotExistsAsync(adapter_states_1.STATE_AIR_PURIFIER_CONTROL + adapter_states_1.STATE_AIR_PURIFIER_LED, {
+                type: "state",
+                common: {
+                    name: "Display On/Off",
+                    type: "boolean",
+                    role: "switch.power",
+                    read: true,
+                    write: true
+                },
+                native: {}
+            });
         });
     }
     connect(command) {
@@ -267,6 +278,11 @@ class MiHomeAirPurifier extends utils.Adapter {
             this.log.debug(`${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_BUZZER}: ${buzzer}`);
             yield this.setStateAsync(adapter_states_1.STATE_AIR_PURIFIER_CONTROL + adapter_states_1.STATE_AIR_PURIFIER_BUZZER, buzzer, true);
         }));
+        // Led
+        this.miAirPurifier.addListener(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_LED, (led) => __awaiter(this, void 0, void 0, function* () {
+            this.log.debug(`${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_LED}: ${led}`);
+            yield this.setStateAsync(adapter_states_1.STATE_AIR_PURIFIER_CONTROL + adapter_states_1.STATE_AIR_PURIFIER_LED, led, true);
+        }));
     }
     /**
      * Is called when adapter shuts down - callback has to be called under any circumstances!
@@ -330,6 +346,10 @@ class MiHomeAirPurifier extends utils.Adapter {
                         this.log.debug(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
                         this.setBuzzer(!!state.val);
                         break;
+                    case namespace + adapter_states_1.STATE_AIR_PURIFIER_LED:
+                        this.log.debug(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+                        this.setLed(!!state.val);
+                        break;
                 }
             }
             else {
@@ -381,10 +401,25 @@ class MiHomeAirPurifier extends utils.Adapter {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const result = yield this.miAirPurifier.setBuzzer(buzzer);
-                yield this.setStateAsync(adapter_states_1.STATE_AIR_PURIFIER_CONTROL + adapter_states_1.STATE_AIR_PURIFIER_BUZZER, result, true);
+                if (!!result) {
+                    yield this.setStateAsync(adapter_states_1.STATE_AIR_PURIFIER_CONTROL + adapter_states_1.STATE_AIR_PURIFIER_BUZZER, result, true);
+                }
             }
             catch (err) {
                 this.reconnect(true, () => this.setBuzzer(buzzer));
+            }
+        });
+    }
+    setLed(led) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield this.miAirPurifier.setLed(led);
+                if (!!result) {
+                    yield this.setStateAsync(adapter_states_1.STATE_AIR_PURIFIER_CONTROL + adapter_states_1.STATE_AIR_PURIFIER_LED, result, true);
+                }
+            }
+            catch (err) {
+                this.reconnect(true, () => this.setLed(led));
             }
         });
     }
