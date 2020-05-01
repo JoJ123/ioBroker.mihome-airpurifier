@@ -176,6 +176,28 @@ class MiHomeAirPurifier extends utils.Adapter {
                 },
                 native: {}
             });
+            yield this.setObjectNotExistsAsync(adapter_states_1.STATE_AIR_PURIFIER_INFORMATION + adapter_states_1.STATE_AIR_PURIFIER_FILTER_REMAINING, {
+                type: "state",
+                common: {
+                    name: "Filter hours remaining",
+                    type: "number",
+                    role: "value",
+                    read: true,
+                    write: false
+                },
+                native: {}
+            });
+            yield this.setObjectNotExistsAsync(adapter_states_1.STATE_AIR_PURIFIER_INFORMATION + adapter_states_1.STATE_AIR_PURIFIER_FILTER_USED, {
+                type: "state",
+                common: {
+                    name: "Filter hours used",
+                    type: "number",
+                    role: "value",
+                    read: true,
+                    write: false
+                },
+                native: {}
+            });
         });
     }
     connect(command) {
@@ -203,9 +225,9 @@ class MiHomeAirPurifier extends utils.Adapter {
     }
     afterConnect(command) {
         try {
-            this.miAirPurifier.checkInitValues();
+            this.miAirPurifier.checkValues();
             this.miAirPurifier.subscribeToValues();
-            this.checkRegularValuesInterval = setInterval(this.miAirPurifier.checkRegularValues, 1000 * 120);
+            this.checkRegularValuesInterval = setInterval(this.miAirPurifier.checkValues, 1000 * 120);
             if (command) {
                 command();
             }
@@ -283,6 +305,16 @@ class MiHomeAirPurifier extends utils.Adapter {
         this.miAirPurifier.addListener(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_LED, (led) => __awaiter(this, void 0, void 0, function* () {
             this.log.debug(`${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_LED}: ${led}`);
             yield this.setStateAsync(adapter_states_1.STATE_AIR_PURIFIER_CONTROL + adapter_states_1.STATE_AIR_PURIFIER_LED, led, true);
+        }));
+        // Filter remaining
+        this.miAirPurifier.addListener(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_FILTER_REMAINING, (hours) => __awaiter(this, void 0, void 0, function* () {
+            this.log.debug(`${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_FILTER_REMAINING}: ${hours}`);
+            yield this.setStateAsync(adapter_states_1.STATE_AIR_PURIFIER_INFORMATION + adapter_states_1.STATE_AIR_PURIFIER_FILTER_REMAINING, hours, true);
+        }));
+        // Filter used
+        this.miAirPurifier.addListener(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_FILTER_USED, (hours) => __awaiter(this, void 0, void 0, function* () {
+            this.log.debug(`${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_FILTER_USED}: ${hours}`);
+            yield this.setStateAsync(adapter_states_1.STATE_AIR_PURIFIER_INFORMATION + adapter_states_1.STATE_AIR_PURIFIER_FILTER_USED, hours, true);
         }));
     }
     /**

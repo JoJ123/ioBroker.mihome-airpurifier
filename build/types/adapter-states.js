@@ -13,3 +13,5 @@ exports.STATE_AIR_PURIFIER_HUMIDITY = "humidity";
 exports.STATE_AIR_PURIFIER_PM25 = "pm25";
 exports.STATE_AIR_PURIFIER_BUZZER = "buzzer";
 exports.STATE_AIR_PURIFIER_LED = "led";
+exports.STATE_AIR_PURIFIER_FILTER_REMAINING = "filterLifeRemaining";
+exports.STATE_AIR_PURIFIER_FILTER_USED = "filterHoursUsed";

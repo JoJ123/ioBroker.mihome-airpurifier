@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 import * as miio from "miio";
-import { EVENT_AIR_PURIFIER_DEBUG_LOG, EVENT_AIR_PURIFIER_POWER, EVENT_AIR_PURIFIER_MODE, EVENT_AIR_PURIFIER_TEMPERATURE, EVENT_AIR_PURIFIER_HUMIDITY, EVENT_AIR_PURIFIER_MANUALLEVEL, EVENT_AIR_PURIFIER_ERROR_LOG, EVENT_AIR_PURIFIER_PM25, EVENT_AIR_PURIFIER_BUZZER, EVENT_AIR_PURIFIER_LED } from "./mi-air-purifier-constants";
+import { EVENT_AIR_PURIFIER_DEBUG_LOG, EVENT_AIR_PURIFIER_POWER, EVENT_AIR_PURIFIER_MODE, EVENT_AIR_PURIFIER_TEMPERATURE, EVENT_AIR_PURIFIER_HUMIDITY, EVENT_AIR_PURIFIER_MANUALLEVEL, EVENT_AIR_PURIFIER_ERROR_LOG, EVENT_AIR_PURIFIER_PM25, EVENT_AIR_PURIFIER_BUZZER, EVENT_AIR_PURIFIER_LED, EVENT_AIR_PURIFIER_FILTER_REMAINING, EVENT_AIR_PURIFIER_FILTER_USED } from "./mi-air-purifier-constants";
 
 export class MiAirPurifier extends EventEmitter {
 	ipAddress: string;
@@ -23,6 +23,7 @@ export class MiAirPurifier extends EventEmitter {
 
 	async connect(): Promise<boolean> {
 		this.emit(EVENT_AIR_PURIFIER_DEBUG_LOG, `Connect to device: ${this.ipAddress}`);
+		
 		this.device = await miio.device({
 			address: this.ipAddress,
 			token: this.token
@@ -35,7 +36,7 @@ export class MiAirPurifier extends EventEmitter {
 	}
 
 	subscribeToValues(): void {
-		this.emit(EVENT_AIR_PURIFIER_DEBUG_LOG,`subscribeToValues`);
+		this.emit(EVENT_AIR_PURIFIER_DEBUG_LOG, "subscribeToValues");
 		this.device.on("powerChanged", (isOn: any) => this.emit(EVENT_AIR_PURIFIER_POWER, isOn));
 		this.device.on("modeChanged", (mode: any) => this.emit(EVENT_AIR_PURIFIER_MODE, mode));
 		this.device.on("temperatureChanged", (temp: any) =>
@@ -50,87 +51,19 @@ export class MiAirPurifier extends EventEmitter {
 		);
 	}
 
-	checkRegularValues(): void {
-		// Power
-		this.device
-			.power()
-			.then((isOn: any) => this.emit(EVENT_AIR_PURIFIER_POWER, isOn))
-			.catch((err: any) => this.emit(EVENT_AIR_PURIFIER_ERROR_LOG, `No ${EVENT_AIR_PURIFIER_POWER} data. Error: ${err}`));
-		// Mode
-		this.device
-			.mode()
-			.then((mode: any) => this.emit(EVENT_AIR_PURIFIER_MODE, mode))
-			.catch((err: any) => this.emit(EVENT_AIR_PURIFIER_ERROR_LOG, `No ${EVENT_AIR_PURIFIER_MODE} data. Error: ${err}`));
-		// Favorite Level
-		this.device
-			.favoriteLevel()
-			.then((favoriteLevel: any) => this.emit(EVENT_AIR_PURIFIER_MANUALLEVEL, favoriteLevel))
-			.catch((err: any) => this.emit(EVENT_AIR_PURIFIER_ERROR_LOG, `No ${EVENT_AIR_PURIFIER_MANUALLEVEL} data. Error: ${err}`));
-		
-		// Buzzer
-		if (!!this.device.buzzer && typeof this.device.buzzer === "function") {
-			const buzzer = this.device.buzzer()
-			if (!!buzzer) {
-				this.emit(EVENT_AIR_PURIFIER_BUZZER, buzzer)
-			}
-		}
+	async checkValues(): Promise<void> {
+		this.emit(EVENT_AIR_PURIFIER_DEBUG_LOG, "checkValues");
 
-		// Led
-		if (!!this.device.led && typeof this.device.led === "function") {
-			const led = this.device.led()
-			if (!!led) {
-				this.emit(EVENT_AIR_PURIFIER_LED, led)
-			}
-		}
-	}
+		const miioProperties = this.device.miioProperties()
 
-	checkInitValues(): void {
-		// Power
-		this.device
-			.power()
-			.then((isOn: any) => this.emit(EVENT_AIR_PURIFIER_POWER, isOn))
-			.catch((err: any) => this.emit(EVENT_AIR_PURIFIER_ERROR_LOG, `No ${EVENT_AIR_PURIFIER_POWER} data. Error: ${err}`));
-		// Mode
-		this.device
-			.mode()
-			.then((mode: any) => this.emit(EVENT_AIR_PURIFIER_MODE, mode))
-			.catch((err: any) => this.emit(EVENT_AIR_PURIFIER_ERROR_LOG, `No ${EVENT_AIR_PURIFIER_MODE} data. Error: ${err}`));
-		// Favorite Level
-		this.device
-			.favoriteLevel()
-			.then((favoriteLevel: any) => this.emit(EVENT_AIR_PURIFIER_MANUALLEVEL, favoriteLevel))
-			.catch((err: any) => this.emit(EVENT_AIR_PURIFIER_ERROR_LOG, `No ${EVENT_AIR_PURIFIER_MANUALLEVEL} data. Error: ${err}`));
-		// Temperature
-		this.device
-			.temperature()
-			.then((temp: any) => this.emit(EVENT_AIR_PURIFIER_TEMPERATURE, temp))
-			.catch((err: any) => this.emit(EVENT_AIR_PURIFIER_ERROR_LOG, `No ${EVENT_AIR_PURIFIER_TEMPERATURE} data. Error: ${err}`));
-		// Relative Humidity
-		this.device
-			.relativeHumidity()
-			.then((rh: any) => this.emit(EVENT_AIR_PURIFIER_HUMIDITY, rh))
-			.catch((err: any) => this.emit(EVENT_AIR_PURIFIER_ERROR_LOG, `No ${EVENT_AIR_PURIFIER_HUMIDITY} data. Error: ${err}`));
-		// PM 2.5
-		this.device
-			.pm2_5()
-			.then((pm25: any) => this.emit(EVENT_AIR_PURIFIER_PM25, pm25))
-			.catch((err: any) => this.emit(EVENT_AIR_PURIFIER_ERROR_LOG, `No ${EVENT_AIR_PURIFIER_PM25} data. Error: ${err}`));
-	
-		// Buzzer
-		if (!!this.device.buzzer && typeof this.device.buzzer === "function") {
-			const buzzer = this.device.buzzer()
-			if (!!buzzer) {
-				this.emit(EVENT_AIR_PURIFIER_BUZZER, buzzer)
-			}
-		}
-
-		// Led
-		if (!!this.device.led && typeof this.device.led === "function") {
-			const led = this.device.led()
-			if (!!led) {
-				this.emit(EVENT_AIR_PURIFIER_LED, led)
-			}
-		}
+		this.emit(EVENT_AIR_PURIFIER_POWER, miioProperties.power)
+		this.emit(EVENT_AIR_PURIFIER_MODE, miioProperties.mode)
+		this.emit(EVENT_AIR_PURIFIER_MANUALLEVEL, miioProperties.favoriteLevel)
+		this.emit(EVENT_AIR_PURIFIER_TEMPERATURE, miioProperties.temperature)
+		this.emit(EVENT_AIR_PURIFIER_HUMIDITY, miioProperties.humidity)
+		this.emit(EVENT_AIR_PURIFIER_PM25, miioProperties.aqi)
+		this.emit(EVENT_AIR_PURIFIER_FILTER_REMAINING, miioProperties.filterLifeRemaining)
+		this.emit(EVENT_AIR_PURIFIER_FILTER_USED, miioProperties.filterHoursUsed)
 	}
 
 	setPower(power: boolean): Promise<boolean> {

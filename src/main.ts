@@ -4,8 +4,8 @@
 
 import * as utils from "@iobroker/adapter-core";
 import { MiAirPurifier } from "./air-purifier/mi-air-purifier";
-import { EVENT_AIR_PURIFIER_DEBUG_LOG, EVENT_AIR_PURIFIER_INFO_LOG, EVENT_AIR_PURIFIER_ERROR_LOG, EVENT_AIR_PURIFIER_POWER, EVENT_AIR_PURIFIER_MODE, EVENT_AIR_PURIFIER_MANUALLEVEL, EVENT_AIR_PURIFIER_TEMPERATURE, EVENT_AIR_PURIFIER_HUMIDITY, EVENT_AIR_PURIFIER_PM25, EVENT_AIR_PURIFIER_BUZZER, EVENT_AIR_PURIFIER_LED } from "./air-purifier/mi-air-purifier-constants";
-import { STATE_AIR_PURIFIER_CONTROL, STATE_AIR_PURIFIER_POWER, STATE_AIR_PURIFIER_INFORMATION, STATE_AIR_PURIFIER_MODE, STATE_AIR_PURIFIER_MODE_NIGHT, STATE_AIR_PURIFIER_MODE_AUTO, STATE_AIR_PURIFIER_MODE_MANUAL, STATE_AIR_PURIFIER_MANUALLEVEL, STATE_AIR_PURIFIER_TEMPERATURE, STATE_AIR_PURIFIER_HUMIDITY, STATE_AIR_PURIFIER_PM25, STATE_AIR_PURIFIER_BUZZER, STATE_AIR_PURIFIER_LED } from "./types/adapter-states";
+import { EVENT_AIR_PURIFIER_DEBUG_LOG, EVENT_AIR_PURIFIER_INFO_LOG, EVENT_AIR_PURIFIER_ERROR_LOG, EVENT_AIR_PURIFIER_POWER, EVENT_AIR_PURIFIER_MODE, EVENT_AIR_PURIFIER_MANUALLEVEL, EVENT_AIR_PURIFIER_TEMPERATURE, EVENT_AIR_PURIFIER_HUMIDITY, EVENT_AIR_PURIFIER_PM25, EVENT_AIR_PURIFIER_BUZZER, EVENT_AIR_PURIFIER_LED, EVENT_AIR_PURIFIER_FILTER_REMAINING, EVENT_AIR_PURIFIER_FILTER_USED } from "./air-purifier/mi-air-purifier-constants";
+import { STATE_AIR_PURIFIER_CONTROL, STATE_AIR_PURIFIER_POWER, STATE_AIR_PURIFIER_INFORMATION, STATE_AIR_PURIFIER_MODE, STATE_AIR_PURIFIER_MODE_NIGHT, STATE_AIR_PURIFIER_MODE_AUTO, STATE_AIR_PURIFIER_MODE_MANUAL, STATE_AIR_PURIFIER_MANUALLEVEL, STATE_AIR_PURIFIER_TEMPERATURE, STATE_AIR_PURIFIER_HUMIDITY, STATE_AIR_PURIFIER_PM25, STATE_AIR_PURIFIER_BUZZER, STATE_AIR_PURIFIER_LED, STATE_AIR_PURIFIER_FILTER_REMAINING, STATE_AIR_PURIFIER_FILTER_USED } from "./types/adapter-states";
 
 declare global {
 	// eslint-disable-next-line @typescript-eslint/no-namespace
@@ -191,6 +191,28 @@ class MiHomeAirPurifier extends utils.Adapter {
 			},
 			native: {}
 	  	});
+	  	await this.setObjectNotExistsAsync(STATE_AIR_PURIFIER_INFORMATION + STATE_AIR_PURIFIER_FILTER_REMAINING, {
+			type: "state",
+			common: {
+				name: "Filter hours remaining",
+				type: "number",
+				role: "value",
+				read: true,
+				write: false
+			},
+			native: {}
+	  	});
+	  	await this.setObjectNotExistsAsync(STATE_AIR_PURIFIER_INFORMATION + STATE_AIR_PURIFIER_FILTER_USED, {
+			type: "state",
+			common: {
+				name: "Filter hours used",
+				type: "number",
+				role: "value",
+				read: true,
+				write: false
+			},
+			native: {}
+	  	});
 	}
 
 	private async connect(command?: any): Promise<void> {
@@ -216,9 +238,9 @@ class MiHomeAirPurifier extends utils.Adapter {
 
 	private afterConnect(command?: any): void {
 		try {
-			this.miAirPurifier.checkInitValues();
+			this.miAirPurifier.checkValues();
 			this.miAirPurifier.subscribeToValues();
-			this.checkRegularValuesInterval = setInterval(this.miAirPurifier.checkRegularValues, 1000 * 120);
+			this.checkRegularValuesInterval = setInterval(this.miAirPurifier.checkValues, 1000 * 120);
 			if (command) {
 				command();
 			}
@@ -303,6 +325,16 @@ class MiHomeAirPurifier extends utils.Adapter {
 		this.miAirPurifier.addListener(EVENT_AIR_PURIFIER_LED, async (led: boolean) => {
 		  	this.log.debug(`${EVENT_AIR_PURIFIER_LED}: ${led}`);
 		 	await this.setStateAsync(STATE_AIR_PURIFIER_CONTROL + STATE_AIR_PURIFIER_LED, led, true);
+		});
+		// Filter remaining
+		this.miAirPurifier.addListener(EVENT_AIR_PURIFIER_FILTER_REMAINING, async (hours: number) => {
+		  	this.log.debug(`${EVENT_AIR_PURIFIER_FILTER_REMAINING}: ${hours}`);
+		 	await this.setStateAsync(STATE_AIR_PURIFIER_INFORMATION + STATE_AIR_PURIFIER_FILTER_REMAINING, hours, true);
+		});
+		// Filter used
+		this.miAirPurifier.addListener(EVENT_AIR_PURIFIER_FILTER_USED, async (hours: number) => {
+		  	this.log.debug(`${EVENT_AIR_PURIFIER_FILTER_USED}: ${hours}`);
+		 	await this.setStateAsync(STATE_AIR_PURIFIER_INFORMATION + STATE_AIR_PURIFIER_FILTER_USED, hours, true);
 		});
 	  }
 
