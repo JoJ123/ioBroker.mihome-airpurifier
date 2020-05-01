@@ -60,6 +60,8 @@ class MiAirPurifier extends events_1.EventEmitter {
             this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_TEMPERATURE, miioProperties.temperature);
             this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_HUMIDITY, miioProperties.humidity);
             this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_PM25, miioProperties.aqi);
+            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_BUZZER, miioProperties.buzzer);
+            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_LED, miioProperties.led);
             this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_FILTER_REMAINING, miioProperties.filterLifeRemaining);
             this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_FILTER_USED, miioProperties.filterHoursUsed);
         });

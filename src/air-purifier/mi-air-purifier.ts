@@ -23,7 +23,7 @@ export class MiAirPurifier extends EventEmitter {
 
 	async connect(): Promise<boolean> {
 		this.emit(EVENT_AIR_PURIFIER_DEBUG_LOG, `Connect to device: ${this.ipAddress}`);
-		
+
 		this.device = await miio.device({
 			address: this.ipAddress,
 			token: this.token
@@ -62,6 +62,8 @@ export class MiAirPurifier extends EventEmitter {
 		this.emit(EVENT_AIR_PURIFIER_TEMPERATURE, miioProperties.temperature)
 		this.emit(EVENT_AIR_PURIFIER_HUMIDITY, miioProperties.humidity)
 		this.emit(EVENT_AIR_PURIFIER_PM25, miioProperties.aqi)
+		this.emit(EVENT_AIR_PURIFIER_BUZZER, miioProperties.buzzer)
+		this.emit(EVENT_AIR_PURIFIER_LED, miioProperties.led)
 		this.emit(EVENT_AIR_PURIFIER_FILTER_REMAINING, miioProperties.filterLifeRemaining)
 		this.emit(EVENT_AIR_PURIFIER_FILTER_USED, miioProperties.filterHoursUsed)
 	}
