@@ -227,7 +227,7 @@ class MiHomeAirPurifier extends utils.Adapter {
         try {
             this.miAirPurifier.checkValues();
             this.miAirPurifier.subscribeToValues();
-            this.checkRegularValuesInterval = setInterval(() => this.miAirPurifier.checkValues(), 1000 * 30);
+            this.checkRegularValuesInterval = setInterval(() => this.miAirPurifier.checkValues(), 1000 * 120);
             if (command) {
                 command();
             }
