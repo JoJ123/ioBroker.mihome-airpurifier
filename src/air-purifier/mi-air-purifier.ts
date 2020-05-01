@@ -51,21 +51,23 @@ export class MiAirPurifier extends EventEmitter {
 		);
 	}
 
-	async checkValues(): Promise<void> {
-		this.emit(EVENT_AIR_PURIFIER_DEBUG_LOG, "checkValues");
+	async checkValues(): Promise<void> {		
+		if (!!this.emit && typeof this.emit === "function") {
+			this.emit(EVENT_AIR_PURIFIER_DEBUG_LOG, "checkValues");
 
-		const miioProperties = this.device.miioProperties()
+			const miioProperties = this.device.miioProperties()
 
-		this.emit(EVENT_AIR_PURIFIER_POWER, miioProperties.power)
-		this.emit(EVENT_AIR_PURIFIER_MODE, miioProperties.mode)
-		this.emit(EVENT_AIR_PURIFIER_MANUALLEVEL, miioProperties.favoriteLevel)
-		this.emit(EVENT_AIR_PURIFIER_TEMPERATURE, miioProperties.temperature)
-		this.emit(EVENT_AIR_PURIFIER_HUMIDITY, miioProperties.humidity)
-		this.emit(EVENT_AIR_PURIFIER_PM25, miioProperties.aqi)
-		this.emit(EVENT_AIR_PURIFIER_BUZZER, miioProperties.buzzer)
-		this.emit(EVENT_AIR_PURIFIER_LED, miioProperties.led)
-		this.emit(EVENT_AIR_PURIFIER_FILTER_REMAINING, miioProperties.filterLifeRemaining)
-		this.emit(EVENT_AIR_PURIFIER_FILTER_USED, miioProperties.filterHoursUsed)
+			this.emit(EVENT_AIR_PURIFIER_POWER, miioProperties.power)
+			this.emit(EVENT_AIR_PURIFIER_MODE, miioProperties.mode)
+			this.emit(EVENT_AIR_PURIFIER_MANUALLEVEL, miioProperties.favoriteLevel)
+			this.emit(EVENT_AIR_PURIFIER_TEMPERATURE, miioProperties.temperature)
+			this.emit(EVENT_AIR_PURIFIER_HUMIDITY, miioProperties.humidity)
+			this.emit(EVENT_AIR_PURIFIER_PM25, miioProperties.aqi)
+			this.emit(EVENT_AIR_PURIFIER_BUZZER, miioProperties.buzzer)
+			this.emit(EVENT_AIR_PURIFIER_LED, miioProperties.led)
+			this.emit(EVENT_AIR_PURIFIER_FILTER_REMAINING, miioProperties.filterLifeRemaining)
+			this.emit(EVENT_AIR_PURIFIER_FILTER_USED, miioProperties.filterHoursUsed)
+		}
 	}
 
 	setPower(power: boolean): Promise<boolean> {

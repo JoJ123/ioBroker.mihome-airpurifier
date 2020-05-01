@@ -52,18 +52,20 @@ class MiAirPurifier extends events_1.EventEmitter {
     }
     checkValues() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_DEBUG_LOG, "checkValues");
-            const miioProperties = this.device.miioProperties();
-            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_POWER, miioProperties.power);
-            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MODE, miioProperties.mode);
-            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MANUALLEVEL, miioProperties.favoriteLevel);
-            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_TEMPERATURE, miioProperties.temperature);
-            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_HUMIDITY, miioProperties.humidity);
-            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_PM25, miioProperties.aqi);
-            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_BUZZER, miioProperties.buzzer);
-            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_LED, miioProperties.led);
-            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_FILTER_REMAINING, miioProperties.filterLifeRemaining);
-            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_FILTER_USED, miioProperties.filterHoursUsed);
+            if (!!this.emit && typeof this.emit === "function") {
+                this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_DEBUG_LOG, "checkValues");
+                const miioProperties = this.device.miioProperties();
+                this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_POWER, miioProperties.power);
+                this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MODE, miioProperties.mode);
+                this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MANUALLEVEL, miioProperties.favoriteLevel);
+                this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_TEMPERATURE, miioProperties.temperature);
+                this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_HUMIDITY, miioProperties.humidity);
+                this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_PM25, miioProperties.aqi);
+                this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_BUZZER, miioProperties.buzzer);
+                this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_LED, miioProperties.led);
+                this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_FILTER_REMAINING, miioProperties.filterLifeRemaining);
+                this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_FILTER_USED, miioProperties.filterHoursUsed);
+            }
         });
     }
     setPower(power) {
