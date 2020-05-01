@@ -173,8 +173,6 @@ class MiHomeAirPurifier extends utils.Adapter {
 
 	private async connect(command?: any): Promise<void> {
 		this.log.info("Connecting...");
-		await this.miAirPurifier.connect()
-
 		if (this.reconnectTimeout) {
 			clearTimeout(this.reconnectTimeout);
 		}

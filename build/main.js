@@ -159,7 +159,6 @@ class MiHomeAirPurifier extends utils.Adapter {
     connect(command) {
         return __awaiter(this, void 0, void 0, function* () {
             this.log.info("Connecting...");
-            yield this.miAirPurifier.connect();
             if (this.reconnectTimeout) {
                 clearTimeout(this.reconnectTimeout);
             }

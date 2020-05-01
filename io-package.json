@@ -1,9 +1,9 @@
 {
 	"common": {
         "name": "mihome-airpurifier",
-		"version": "0.1.2",
+		"version": "0.1.4",
 		"news": {
-            "0.1.2": {
+            "0.1.4": {
                 "en": "Fix bugs",
                 "de": "Fehlerbehebung"
             },
