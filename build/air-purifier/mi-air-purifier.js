@@ -42,7 +42,7 @@ class MiAirPurifier extends events_1.EventEmitter {
         });
     }
     subscribeToValues() {
-        this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_DEBUG_LOG, `subscribeToValues`);
+        this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_DEBUG_LOG, "subscribeToValues");
         this.device.on("powerChanged", (isOn) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_POWER, isOn));
         this.device.on("modeChanged", (mode) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MODE, mode));
         this.device.on("temperatureChanged", (temp) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_TEMPERATURE, temp));
@@ -50,54 +50,21 @@ class MiAirPurifier extends events_1.EventEmitter {
         this.device.on("pm2.5Changed", (pm25) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_PM25, pm25));
         this.device.on("favoriteLevel", (favoriteLevel) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MANUALLEVEL, favoriteLevel));
     }
-    checkRegularValues() {
-        // Power
-        this.device
-            .power()
-            .then((isOn) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_POWER, isOn))
-            .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_POWER} data. Error: ${err}`));
-        // Mode
-        this.device
-            .mode()
-            .then((mode) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MODE, mode))
-            .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MODE} data. Error: ${err}`));
-        // Favorite Level
-        this.device
-            .favoriteLevel()
-            .then((favoriteLevel) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MANUALLEVEL, favoriteLevel))
-            .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MANUALLEVEL} data. Error: ${err}`));
-    }
-    checkInitValues() {
-        // Power
-        this.device
-            .power()
-            .then((isOn) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_POWER, isOn))
-            .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_POWER} data. Error: ${err}`));
-        // Mode
-        this.device
-            .mode()
-            .then((mode) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MODE, mode))
-            .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MODE} data. Error: ${err}`));
-        // Favorite Level
-        this.device
-            .favoriteLevel()
-            .then((favoriteLevel) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MANUALLEVEL, favoriteLevel))
-            .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MANUALLEVEL} data. Error: ${err}`));
-        // Temperature
-        this.device
-            .temperature()
-            .then((temp) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_TEMPERATURE, temp))
-            .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_TEMPERATURE} data. Error: ${err}`));
-        // Relative Humidity
-        this.device
-            .relativeHumidity()
-            .then((rh) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_HUMIDITY, rh))
-            .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_TEMPERATURE} data. Error: ${err}`));
-        // PM 2.5
-        this.device
-            .pm2_5()
-            .then((pm25) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_PM25, pm25))
-            .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_TEMPERATURE} data. Error: ${err}`));
+    checkValues() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_DEBUG_LOG, "checkValues");
+            const miioProperties = this.device.miioProperties();
+            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_POWER, miioProperties.power);
+            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MODE, miioProperties.mode);
+            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MANUALLEVEL, miioProperties.favoriteLevel);
+            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_TEMPERATURE, miioProperties.temperature);
+            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_HUMIDITY, miioProperties.humidity);
+            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_PM25, miioProperties.aqi);
+            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_BUZZER, miioProperties.buzzer);
+            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_LED, miioProperties.led);
+            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_FILTER_REMAINING, miioProperties.filterLifeRemaining);
+            this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_FILTER_USED, miioProperties.filterHoursUsed);
+        });
     }
     setPower(power) {
         return this.device.power(power);
@@ -114,6 +81,16 @@ class MiAirPurifier extends events_1.EventEmitter {
     setFavoriteLevel(favoriteLevel) {
         if (favoriteLevel >= 0 && favoriteLevel <= 16) {
             return this.device.setFavoriteLevel(favoriteLevel);
+        }
+    }
+    setBuzzer(buzzer) {
+        if (!!this.device.buzzer && typeof this.device.buzzer === "function") {
+            return this.device.buzzer(buzzer);
+        }
+    }
+    setLed(led) {
+        if (!!this.device.led && typeof this.device.led === "function") {
+            return this.device.led(led);
         }
     }
 }
