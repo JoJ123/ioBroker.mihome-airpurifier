@@ -10,3 +10,7 @@ export const STATE_AIR_PURIFIER_MANUALLEVEL = "manuallevel";
 export const STATE_AIR_PURIFIER_TEMPERATURE = "temperature";
 export const STATE_AIR_PURIFIER_HUMIDITY = "humidity";
 export const STATE_AIR_PURIFIER_PM25 = "pm25";
+export const STATE_AIR_PURIFIER_BUZZER = "buzzer";
+export const STATE_AIR_PURIFIER_LED = "led";
+export const STATE_AIR_PURIFIER_FILTER_REMAINING = "filterLifeRemaining";
+export const STATE_AIR_PURIFIER_FILTER_USED = "filterHoursUsed";
