@@ -66,6 +66,13 @@ class MiAirPurifier extends events_1.EventEmitter {
             .favoriteLevel()
             .then((favoriteLevel) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MANUALLEVEL, favoriteLevel))
             .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_MANUALLEVEL} data. Error: ${err}`));
+        // Buzzer
+        if (typeof this.device.buzzer === "function") {
+            this.device
+                .buzzer()
+                .then((buzzer) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_BUZZER, buzzer))
+                .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_BUZZER} data. Error: ${err}`));
+        }
     }
     checkInitValues() {
         // Power
@@ -92,12 +99,19 @@ class MiAirPurifier extends events_1.EventEmitter {
         this.device
             .relativeHumidity()
             .then((rh) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_HUMIDITY, rh))
-            .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_TEMPERATURE} data. Error: ${err}`));
+            .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_HUMIDITY} data. Error: ${err}`));
         // PM 2.5
         this.device
             .pm2_5()
             .then((pm25) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_PM25, pm25))
-            .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_TEMPERATURE} data. Error: ${err}`));
+            .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_PM25} data. Error: ${err}`));
+        // Buzzer
+        if (typeof this.device.buzzer === "function") {
+            this.device
+                .buzzer()
+                .then((buzzer) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_BUZZER, buzzer))
+                .catch((err) => this.emit(mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_ERROR_LOG, `No ${mi_air_purifier_constants_1.EVENT_AIR_PURIFIER_BUZZER} data. Error: ${err}`));
+        }
     }
     setPower(power) {
         return this.device.power(power);
@@ -115,6 +129,9 @@ class MiAirPurifier extends events_1.EventEmitter {
         if (favoriteLevel >= 0 && favoriteLevel <= 16) {
             return this.device.setFavoriteLevel(favoriteLevel);
         }
+    }
+    setBuzzer(buzzer) {
+        return this.device.buzzer(buzzer);
     }
 }
 exports.MiAirPurifier = MiAirPurifier;

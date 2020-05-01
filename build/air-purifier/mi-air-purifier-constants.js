@@ -10,6 +10,7 @@ exports.EVENT_AIR_PURIFIER_MANUALLEVEL = "manuallevel";
 exports.EVENT_AIR_PURIFIER_TEMPERATURE = "temperature";
 exports.EVENT_AIR_PURIFIER_HUMIDITY = "humidity";
 exports.EVENT_AIR_PURIFIER_PM25 = "pm25";
+exports.EVENT_AIR_PURIFIER_BUZZER = "buzzer";
 exports.EVENT_AIR_PURIFIER_ERROR_LOG = "error";
 exports.EVENT_AIR_PURIFIER_DEBUG_LOG = "debug";
 exports.EVENT_AIR_PURIFIER_INFO_LOG = "info";
