@@ -1,8 +1,12 @@
 {
 	"common": {
         "name": "mihome-airpurifier",
-		"version": "0.1.7",
+		"version": "0.1.8",
 		"news": {
+            "0.1.8": {
+                "en": "Bug: npm install",
+                "de": "Fehler: npm install"
+            },
             "0.1.7": {
                 "en": "Bug: interval load data",
                 "de": "Fehler: Interval Daten laden"
