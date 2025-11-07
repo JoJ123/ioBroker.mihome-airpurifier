@@ -102,6 +102,7 @@
 		"extIcon": "https://raw.githubusercontent.com/JoJ123/ioBroker.mihome-airpurifier/master/admin/mihome-airpurifier.png",		
         "readme": "https://github.com/JoJ123/ioBroker.mihome-airpurifier/blob/master/README.md",
 		"loglevel": "info",
+        "tier": 2,
 		"mode": "daemon",
         "type": "climate-control",
 		"compact": true,
