@@ -96,7 +96,6 @@
         ],
 		"license": "MIT",
 		"platform": "Javascript/Node.js",
-		"main": "build/main.js",
         "icon": "mihome-airpurifier.png",
 		"enabled": true,
 		"extIcon": "https://raw.githubusercontent.com/JoJ123/ioBroker.mihome-airpurifier/master/admin/mihome-airpurifier.png",		
