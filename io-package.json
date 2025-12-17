@@ -121,8 +121,7 @@
 				"pl": "Szablon (TypeScript)",
 				"zh-cn": "模板（TypeScript）"
 			},
-			"link": "",
-			"fa-icon": "info"
+			"link": ""
 		},
 		"supportCustoms": true,
 		"dependencies": [
