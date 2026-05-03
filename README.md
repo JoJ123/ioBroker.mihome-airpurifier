@@ -115,6 +115,8 @@ The following information is collected from your air purifier (read-only states)
 ### 0.0.1 (10.10.2018)
 * (JoJ123) initial release
 
+[Older changelogs can be found there](CHANGELOG_OLD.md)
+
 ## License
 The MIT License (MIT)
 
