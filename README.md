@@ -79,6 +79,10 @@ The following information is collected from your air purifier (read-only states)
 | `filterHoursUsed`        | The used hours of the filter. |
 
 ## Changelog
+
+### **WORK IN PROGRESS**
+- (ioBroker-Bot) Adapter requires js-controller >= 6.0.11 now.
+
 ### 0.1.8 (02.05.2020)
 * (JoJ123) bug: npm install
 
